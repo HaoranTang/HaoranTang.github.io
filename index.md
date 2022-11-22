@@ -10,7 +10,7 @@ I was born and raised in Chongqing, China, a metropolis built on mountains and r
 
 ## Research
 
-I am passionate about solving representation learning problems with limited supervision, which leads to two major approaches of interest: adapting to few/no supervision or transferring knowledge. My current research interests include **self-supervised learning, multi-task learning, autoencoders, domain adaptation, diffusion models**, and so on. I am seeking PhD position starting fall 2023. 
+I am passionate about solving representation learning problems with limited supervision, which leads to two major approaches of interest: adapting to few/no supervision, and transferring knowledge. My current research interests include **self-supervised learning, multi-task learning, autoencoders, domain adaptation, diffusion models**, and so on. I am seeking PhD position starting fall 2023. 
 
 Here is my lastest [CV](./assets/Haoran_Tang_CV.pdf).
 
