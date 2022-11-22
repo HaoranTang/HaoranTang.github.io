@@ -1,6 +1,6 @@
 title: Haoran Tang
 logo: /assets/img/diffuse-the-rest-149.png
-description: An anime version of me, according to [Stable Diffusion](https://ommer-lab.com/research/latent-diffusion-models/).
+description: An anime version of me, according to <a href="https://ommer-lab.com/research/latent-diffusion-models/">Stable Diffusion</a>.
 # show_downloads: true
 # google_analytics:
 theme: jekyll-theme-minimal
