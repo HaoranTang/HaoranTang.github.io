@@ -2,7 +2,7 @@
 layout: default
 ---
 
-## Bio
+## About me
 
 Welcome to my personal page! I am a second-year Robotics master at University of Pennsylvania, where I currently work with Prof. [Pratik Chaudhari](https://pratikac.github.io/) and Prof. [Jianbo Shi](https://www.cis.upenn.edu/~jshi/). I obtained my B.S. in Computer Enginnering at [ECE Illinois](https://ece.illinois.edu/) with Mathematics minor.
 
