@@ -4,7 +4,8 @@ email: thr99@seas.upenn.edu
 description: Robotics@<a href="https://www.grasp.upenn.edu/">GRASP Lab</a>
 show_downloads: false
 google_analytics:
-color-scheme: dark
+color-scheme: auto
+favicon: true
 plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
