@@ -3,7 +3,7 @@ logo: /assets/img/diffuse-the-rest-149.png
 email: thr99@seas.upenn.edu
 description: Robotics@<a href="https://www.grasp.upenn.edu/">GRASP Lab</a>
 show_downloads: false
-google_analytics: {{ site.google_analytics }}
+google_analytics: G-ZYJJ5WFBF3
 color-scheme: auto
 favicon: true
 plugins:
