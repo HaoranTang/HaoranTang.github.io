@@ -1,13 +1,13 @@
 main:
 
-  - title: Contrastive Learning Relies More on Spatial Inductive Bias Than Supervised Learning: An Empirical Study
-    authors: Yuanyi Zhong*, <strong>Haoran Tang*</strong>, Junkun Chen*, Yuxiong Wang
-    conference_short: ICCV
-    conference: International Conference on Computer Vision (<strong>ICCV</strong>), 2023.
-    pdf: https://haorantang.github.io/
-    code: https://haorantang.github.io/
-    bibtex: https://haorantang.github.io/
-    image: ./assets/img/iccv23_12268.png
+  # - title: Contrastive Learning Relies More on Spatial Inductive Bias Than Supervised Learning: An Empirical Study
+  #   authors: Yuanyi Zhong*, <strong>Haoran Tang*</strong>, Junkun Chen*, Yuxiong Wang
+  #   conference_short: ICCV
+  #   conference: International Conference on Computer Vision (<strong>ICCV</strong>), 2023.
+  #   pdf: https://haorantang.github.io/
+  #   code: https://haorantang.github.io/
+  #   bibtex: https://haorantang.github.io/
+  #   image: ./assets/img/iccv23_12268.png
 
   - title: Continual Learning for Abdominal Multi-Organ and Tumor Segmentation
     authors: Yixiao Zhang, Xinyi Li, Huimiao Chen, Alan Yuille, <strong>Yaoyao Liu*</strong>, Zongwei Zhou* (*Corresponding authors)
