@@ -4,9 +4,9 @@ main:
     authors: Yuanyi Zhong*, <strong>Haoran Tang*</strong>, Junkun Chen*, Yuxiong Wang
     conference_short: ICCV
     conference: International Conference on Computer Vision (<strong>ICCV</strong>), 2023.
-    pdf: 
-    code: 
-    bibtex: 
+    # pdf: 
+    # code: 
+    # bibtex: 
     image: ./assets/img/iccv23_12268.png
-    notes: 
+    # notes: 
 
