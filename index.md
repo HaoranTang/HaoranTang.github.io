@@ -21,6 +21,6 @@ Haoran is interested in brain-inspired deep learning, such as algorithms with li
 
 ## Misc.
 
-- Haoran's mental health is substantially funded and advised by [Dolly and Dayko](_includes/dollydayko.md), two lovely Norwegian Forest Cats.
+- Haoran's mental health is substantially funded and advised by [Dolly and Dayko](./dollydayko.md), two lovely Norwegian Forest Cats.
 - Haoran likes ocean and islands; he is a PADI certified scuba diver.
 - Haoran likes to build and customize Gundam model kits, but he has to keep Dolly and Dayko away from them.
