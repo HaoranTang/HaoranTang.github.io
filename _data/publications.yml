@@ -5,8 +5,8 @@ main:
     conference_short: ICCV
     conference: International Conference on Computer Vision (<strong>ICCV</strong>), 2023.
     pdf: https://haorantang.github.io/
-    # code: 
-    # bibtex: 
+    code: https://haorantang.github.io/
+    bibtex: https://haorantang.github.io/
     image: ./assets/img/iccv23_12268.png
     # notes: 
 
