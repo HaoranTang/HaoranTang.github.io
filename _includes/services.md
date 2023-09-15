@@ -13,4 +13,3 @@
 <ul style="margin:0 0 5px;">
   <li>CIS 6800 Advanced Topics in Machine Perception, University of Pennsylvania</li>
 </ul>
-<br>
