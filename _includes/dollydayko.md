@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: homepage
 ---
 
 ![](assets/img/cats/IMG_5230.jpeg)
