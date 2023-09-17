@@ -2,7 +2,7 @@
 layout: homepage
 ---
 
-![](assets/img/cats/IMG_5606.jpeg)
+![](assets/img/cats/IMG_5606.JPG)
 Figure 2. Dolly (front) and Dayko (back) judging Haoran's research presentation.
 
 ## Dolly and Dayko
