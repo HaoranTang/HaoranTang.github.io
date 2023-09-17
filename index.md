@@ -4,7 +4,7 @@ layout: homepage
 
 ## Welcome
 
-Haoran Tang is current a research intern at Baidu USA working on generative AI. He is a MSE Robotics recent graduate at University of Pennsylvania, where he worked with Prof. [Pratik Chaudhari](https://pratikac.github.io/) and Prof. [Jianbo Shi](https://www.cis.upenn.edu/~jshi/). He obtained his BS in Computer Enginnering at University of Illinois at Urbana-Champaign, and worked with Prof. [Yuxiong Wang](https://yxw.web.illinois.edu/) after graduation. Haoran was born and raised in Chongqing, China, a metropolis built on mountains and rivers.
+Haoran Tang is currently a research intern at Baidu USA working on generative AI. He is a MSE Robotics recent graduate at University of Pennsylvania, where he worked with Prof. [Pratik Chaudhari](https://pratikac.github.io/) and Prof. [Jianbo Shi](https://www.cis.upenn.edu/~jshi/). He obtained his BS in Computer Enginnering at University of Illinois at Urbana-Champaign, and worked with Prof. [Yuxiong Wang](https://yxw.web.illinois.edu/) after graduation. Haoran was born and raised in Chongqing, China, a metropolis built on mountains and rivers.
 
 ## Research Interests
 
