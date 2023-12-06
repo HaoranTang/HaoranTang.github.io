@@ -1,5 +1,15 @@
 main:
 
+  - title: Retrieving Conditions from Reference Images for Diffusion Models
+    authors: <strong>Haoran Tang*</strong>, Xin Zhou*, Jieren Deng, Zhihong Pan, Hao Tian, Pratik Chaudhari
+    conference_short: arXiv
+    conference: arXiv, 2023.
+    pdf: https://arxiv.org/abs/2312.02521
+    code: https://haorantang.github.io/retribooru/
+    bibtex: https://haorantang.github.io/cl_spatial_inductive_bias/resources/bibtex.txt
+    image: ./assets/img/retribooru.png
+    # notes: Early Accept
+  
   - title: "Contrastive Learning Relies More on Spatial Inductive Bias Than Supervised Learning: An Empirical Study"
     authors: Yuanyi Zhong*, <strong>Haoran Tang*</strong>, Junkun Chen*, Yuxiong Wang
     conference_short: ICCV
@@ -9,13 +19,3 @@ main:
     code: https://github.com/HaoranTang/Contrastive-Spatial-Inductive-Bias
     bibtex: https://haorantang.github.io/cl_spatial_inductive_bias/resources/bibtex.txt
     image: ./assets/img/iccv23_12268.png
-
-  - title: Retrieving Conditions from Reference Images for Diffusion Models
-    authors: <strong>Haoran Tang*</strong>, Xin Zhou*, Jieren Deng, Zhihong Pan, Hao Tian, Pratik Chaudhari
-    conference_short: arXiv
-    conference: arXiv, 2023.
-    pdf: https://arxiv.org/abs/2312.02521
-    code: https://haorantang.github.io/retribooru/
-    bibtex: https://haorantang.github.io/cl_spatial_inductive_bias/resources/bibtex.txt
-    image: ./assets/img/iccv23_12268.png
-    # notes: Early Accept
