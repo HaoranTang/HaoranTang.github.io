@@ -3,19 +3,19 @@ main:
   - title: "Contrastive Learning Relies More on Spatial Inductive Bias Than Supervised Learning: An Empirical Study"
     authors: Yuanyi Zhong*, <strong>Haoran Tang*</strong>, Junkun Chen*, Yuxiong Wang
     conference_short: ICCV
-    conference: International Conference on Computer Vision (<strong>ICCV</strong>), 2023.
+    conference: International Conference on Computer Vision (ICCV), 2023.
     pdf: https://openaccess.thecvf.com/content/ICCV2023/html/Zhong_Contrastive_Learning_Relies_More_on_Spatial_Inductive_Bias_Than_Supervised_ICCV_2023_paper.html
     website: https://haorantang.github.io/cl_spatial_inductive_bias/
     code: https://github.com/HaoranTang/Contrastive-Spatial-Inductive-Bias
     bibtex: https://haorantang.github.io/cl_spatial_inductive_bias/resources/bibtex.txt
     image: ./assets/img/iccv23_12268.png
 
-  # - title: Continual Learning for Abdominal Multi-Organ and Tumor Segmentation
-  #   authors: Yixiao Zhang, Xinyi Li, Huimiao Chen, Alan Yuille, <strong>Yaoyao Liu*</strong>, Zongwei Zhou* (*Corresponding authors)
-  #   conference_short: MICCAI
-  #   conference: International Conference on Medical Image Computing and Computer-Assisted Intervention <strong>(MICCAI)</strong>, 2023.
-  #   pdf: https://arxiv.org/pdf/2306.00988.pdf
-  #   code: https://github.com/MrGiovanni/ContinualLearning
-  #   bibtex: https://bib.yliu.me/MICCAI23.txt
-  #   image: ./assets/img/teaser_example_2.png
-  #   notes: Early Accept
+  - title: Retrieving Conditions from Reference Images for Diffusion Models
+    authors: <strong>Haoran Tang*</strong>, Xin Zhou*, Jieren Deng, Zhihong Pan, Hao Tian, Pratik Chaudhari
+    conference_short: arXiv
+    conference: arXiv, 2023.
+    pdf: https://arxiv.org/abs/2312.02521
+    code: https://haorantang.github.io/retribooru/
+    bibtex: https://haorantang.github.io/cl_spatial_inductive_bias/resources/bibtex.txt
+    image: ./assets/img/iccv23_12268.png
+    # notes: Early Accept
