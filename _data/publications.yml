@@ -7,7 +7,7 @@ main:
     pdf: https://arxiv.org/abs/2312.02521
     website: https://haorantang.github.io/retribooru/
     code: https://github.com/HaoranTang/retribooru
-    bibtex: https://haorantang.github.io/cl_spatial_inductive_bias/resources/bibtex.txt
+    bibtex: https://haorantang.github.io/retribooru/resources/bibtex.txt
     image: ./assets/img/retribooru.png
     # notes: Early Accept
   
@@ -28,5 +28,5 @@ main:
     pdf: https://arxiv.org/abs/2211.15894
     website: https://haorantang.github.io/
     code: https://haorantang.github.io/
-    bibtex: https://haorantang.github.io/
+    bibtex: https://scholar.googleusercontent.com/scholar.bib?q=info:TgeVpC5vz6oJ:scholar.google.com/&output=citation&scisdr=ClH3ieqTEMeJidzreyA:AFWwaeYAAAAAZXTtYyC9isz4ZfxVpHAhYJr3nd0&scisig=AFWwaeYAAAAAZXTtY8Wj8B4Q6SI-Q3QB_isPF5I&scisf=4&ct=citation&cd=-1&hl=en
     image: ./assets/img/hashencoding.png
