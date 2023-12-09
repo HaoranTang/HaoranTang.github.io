@@ -20,3 +20,13 @@ main:
     code: https://github.com/HaoranTang/Contrastive-Spatial-Inductive-Bias
     bibtex: https://haorantang.github.io/cl_spatial_inductive_bias/resources/bibtex.txt
     image: ./assets/img/iccv23_12268.png
+
+  - title: "HashEncoding: Autoencoding with Multiscale Coordinate Hashing"
+    authors: Lukas Zhornyak*, Zhengjie Xu*, <strong>Haoran Tang*</strong>, Jianbo Shi
+    conference_short: arXiv
+    conference: arXiv, 2022.
+    pdf: https://arxiv.org/abs/2211.15894
+    website: https://haorantang.github.io/
+    code: https://haorantang.github.io/
+    bibtex: https://haorantang.github.io/
+    image: ./assets/img/hashencoding.png
