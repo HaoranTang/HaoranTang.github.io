@@ -23,7 +23,7 @@ twitter: https://twitter.com/hrtang99
 
 # Images (e.g., your profile picture and your website's favicon) 
 # "favicon" and "favicon_dark" are used for the light and dark modes, respectively. 
-avatar: ./assets/img/avatar.png
+avatar: ./assets/img/avatar_v1.png
 favicon: ./assets/img/UniversityofPennsylvania_Shield_RGB.png
 favicon_dark: ./assets/img/UniversityofPennsylvania_Shield_RGB.png
 
