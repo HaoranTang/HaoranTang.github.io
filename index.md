@@ -10,11 +10,6 @@ Haoran Tang is a first-year PhD student at Purdue University, advised by Prof. [
 
 Haoran is interested in representation learning with limited/no supervision, and methods to transfer knowledge. His current research topics include generative models, multitask learning, and contrastive learning.
 
-## News
-
-- **[Jul. 2023]** Haoran's co-first authored paper has been accepted to ICCV 2023.
-- **[Jun. 2023]** Haoran started research internship on Generative AI at Baidu USA.
-
 {% include_relative _includes/publications.md %}
 
 {% include_relative _includes/services.md %}
