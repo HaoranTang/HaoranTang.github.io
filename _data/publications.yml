@@ -1,7 +1,7 @@
 main:
 
-  - title: Retrieving Conditions from Reference Images for Diffusion Models
-    authors: <strong>Haoran Tang*</strong>, Xin Zhou*, Jieren Deng, Zhihong Pan, Hao Tian, Pratik Chaudhari
+  - title: RetriBooru: Leakage-Free Retrieval of Conditions from Reference Images for Subject-Driven Generation
+    authors: <strong>Haoran Tang</strong>, Jieren Deng, Zhihong Pan, Hao Tian, Pratik Chaudhari, Xin Zhou
     conference_short: arXiv
     conference: arXiv, 2023.
     pdf: https://arxiv.org/abs/2312.02521
