@@ -3,7 +3,7 @@ main:
   - title: RetriBooru: Leakage-Free Retrieval of Conditions from Reference Images for Subject-Driven Generation
     authors: <strong>Haoran Tang</strong>, Jieren Deng, Zhihong Pan, Hao Tian, Pratik Chaudhari, Xin Zhou
     conference_short: arXiv
-    conference: arXiv, 2023.
+    conference: arXiv, 2024.
     pdf: https://arxiv.org/abs/2312.02521
     website: https://haorantang.github.io/retribooru/
     code: https://github.com/HaoranTang/retribooru
