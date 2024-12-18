@@ -8,7 +8,7 @@ Haoran Tang is a first-year PhD student at Purdue University, advised by Prof. [
 
 ## Research Interests
 
-Haoran is interested in representation learning with limited/no supervision, and methods to transfer knowledge. His current research topics include generative models, multitask learning, and contrastive learning.
+Haoran is interested in learning with limited/no supervision and methods to edit/transfer knowledge, focusing on faithfulness and explainability of the learning scheme. His current research topics include machine unlearning, generative modeling, and self-supervised learning.
 
 {% include_relative _includes/publications.md %}
 
