@@ -4,7 +4,7 @@ layout: homepage
 
 ## Welcome
 
-Haoran Tang is a first-year PhD student at Purdue CS, advised by Prof. [Rajiv Khanna](https://rjvak7.github.io/). He received his MSE in Robotics from University of Pennsylvania and BS in Computer Engineering at University of Illinois Urbana-Champaign. Haoran was born and raised in Chongqing, China, a metropolis built on mountains and rivers.
+Haoran Tang is a first-year PhD student at Purdue CS, advised by Prof. [Rajiv Khanna](https://rjvak7.github.io/). He received his MSE in Robotics from University of Pennsylvania and BS in Computer Engineering from University of Illinois Urbana-Champaign. Haoran was born and raised in Chongqing, China, a metropolis built on mountains and rivers.
 
 ## Research Interests
 
