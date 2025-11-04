@@ -17,5 +17,5 @@ Haoran is interested in learning with limited/no supervision and methods to edit
 ## Misc.
 
 - Haoran's mental health is substantially funded and advised by [Dolly and Dayko](./dollydayko.md), two lovely Norwegian Forest Cats.
-- Haoran likes ocean and islands; he is a PADI rescue diver.
+- Haoran likes ocean and islands; he is a PADI rescue diver. He also likes playing soccer and climbing.
 - Haoran is a Gundam fan and builds 1/100 scale model kits.
