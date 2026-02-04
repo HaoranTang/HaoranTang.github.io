@@ -5,7 +5,7 @@ main:
     conference_short: ICLR
     conference: International Conference on Learning Representations (ICLR), 2026.
     pdf: https://www.arxiv.org/abs/2506.13715
-    website: https://haorantang.github.io/
+    website: https://www.arxiv.org/abs/2506.13715
     code: https://github.com/HaoranTang/sharp-unlearn
     bibtex: https://scholar.googleusercontent.com/scholar.bib?q=info:iVhCMDhWBlQJ:scholar.google.com/&output=citation&scisdr=CgKGCWNWEKiV0-qjXCQ:AAZF9b8AAAAAaFWlRCRllREfqmhaRgxqzAP09AE&scisig=AAZF9b8AAAAAaFWlRGCMGW5P3nniy1B86iHQAmY&scisf=4&ct=citation&cd=-1&hl=en
     image: ./assets/img/samunlearn.png
@@ -25,7 +25,7 @@ main:
     conference_short: arXiv
     conference: arXiv, 2026.
     pdf: https://arxiv.org/abs/2601.22028
-    website: https://haorantang.github.io/
+    website: https://arxiv.org/abs/2601.22028
     code: https://haorantang.github.io/
     bibtex: https://scholar.googleusercontent.com/scholar.bib?q=info:ZuRRl_12wcwJ:scholar.google.com/&output=citation&scisdr=Cn3DGuhmEKiV0j3LGYc:AHkA5jQAAAAAaYLNAYdIXVmUyPGDQAv0iAiKw0Q&scisig=AHkA5jQAAAAAaYLNAfJ-fEaxqnRHCNykeqqnK2U&scisf=4&ct=citation&cd=-1&hl=en
     image: ./assets/img/clunlearn.png
@@ -46,7 +46,7 @@ main:
     conference_short: arXiv
     conference: arXiv, 2022.
     pdf: https://arxiv.org/abs/2211.15894
-    website: https://haorantang.github.io/
+    website: https://arxiv.org/abs/2211.15894
     code: https://haorantang.github.io/
     bibtex: https://scholar.googleusercontent.com/scholar.bib?q=info:TgeVpC5vz6oJ:scholar.google.com/&output=citation&scisdr=ClH3ieqTEMeJidzreyA:AFWwaeYAAAAAZXTtYyC9isz4ZfxVpHAhYJr3nd0&scisig=AFWwaeYAAAAAZXTtY8Wj8B4Q6SI-Q3QB_isPF5I&scisf=4&ct=citation&cd=-1&hl=en
     image: ./assets/img/hashencoding.png
