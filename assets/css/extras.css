@@ -1,0 +1,164 @@
+/* Additions on top of the Minimal Light theme:
+   sticky top navigation, cat photo gallery, visitor map. */
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* Headings you jump to from the top bar should not hide under it. */
+section [id] { scroll-margin-top: 72px; }
+
+/* ---------- Top navigation bar ---------- */
+.topnav {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: saturate(180%) blur(8px);
+  backdrop-filter: saturate(180%) blur(8px);
+  border-bottom: 1px solid #ececec;
+}
+.topnav-inner {
+  width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  height: 52px;
+}
+.topnav-name {
+  display: none;
+  flex: none;
+  margin-right: 22px;
+  font-weight: 600;
+  font-size: 18px;
+  color: #043361 !important;
+  white-space: nowrap;
+}
+.topnav-links {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 310px; /* line up with the main text column */
+  display: flex;
+  gap: 26px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.topnav-links::-webkit-scrollbar { display: none; }
+.topnav-links li { flex: none; }
+.topnav-links a {
+  display: block;
+  position: relative;
+  padding: 13px 0;
+  font-size: 17px;
+  line-height: 26px;
+  color: #595959;
+  white-space: nowrap;
+}
+.topnav-links a:hover { color: #043361; }
+.topnav-links a.active { color: #043361; }
+.topnav-links a.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8px;
+  height: 2px;
+  border-radius: 1px;
+  background: #043361;
+}
+
+/* The theme floats the main column, which leaves .wrapper with no height.
+   Clearing the float lets the sticky bar stay pinned for the whole page. */
+.wrapper::after { content: ''; display: table; clear: both; }
+
+/* Fixed sidebar sits below the bar; trim the old top padding a little. */
+@media screen and (min-width: 961px) {
+  body.has-topnav header,
+  body.has-topnav section { padding-top: 2.6em; }
+}
+
+/* Tablet and phone: the sidebar scrolls away, so the bar spans the full width. */
+@media print, screen and (max-width: 960px) {
+  .topnav { margin: -15px -15px 15px; }
+  .topnav-inner { width: auto; padding: 0 15px; height: 48px; }
+  .topnav-links { padding-left: 0; gap: 20px; flex: 1 1 auto; min-width: 0; }
+  .topnav-links a { padding: 11px 0; font-size: 16px; }
+  .topnav-links a.active::after { bottom: 7px; }
+  .topnav.is-overflowing .topnav-links {
+    -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
+    mask-image: linear-gradient(to right, #000 85%, transparent);
+    padding-right: 24px;
+  }
+  section [id] { scroll-margin-top: 64px; }
+}
+@media screen and (min-width: 600px) and (max-width: 960px) {
+  .topnav-name { display: block; }
+}
+@media screen and (max-width: 480px) {
+  .topnav-links { gap: 14px; }
+  .topnav-links a { font-size: 15px; }
+}
+@media print { .topnav { display: none; } }
+
+/* ---------- Cat gallery (dollydayko page) ---------- */
+.cat-gallery {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0 0 20px;
+}
+.cat-col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cat-photo { margin: 0; }
+.cat-photo a { display: block; }
+.cat-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+.cat-photo figcaption {
+  padding: 4px 2px 6px;
+  font-size: 15px;
+  line-height: 1.35;
+  color: #777;
+}
+
+/* ---------- Visitor map ---------- */
+.visitor-map {
+  max-width: 520px;
+  margin: 36px auto 0;
+  text-align: center;
+  overflow: hidden;
+  border-radius: 8px;
+}
+.visitor-map img, .visitor-map canvas, .visitor-map iframe { max-width: 100%; }
+.visitor-map-placeholder {
+  padding: 48px 16px;
+  border: 1px dashed #cfd6de;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #888;
+}
+.visitor-map-placeholder code { color: inherit; font-size: 90%; }
+
+/* ---------- Dark mode (only when auto_dark_mode is on) ---------- */
+@media (prefers-color-scheme: dark) {
+  html[data-auto-dark] .topnav {
+    background: rgba(32, 33, 43, 0.92);
+    border-bottom-color: #33343f;
+  }
+  html[data-auto-dark] .topnav-name { color: rgb(62, 183, 240) !important; }
+  html[data-auto-dark] .topnav-links a { color: #b9bac0; }
+  html[data-auto-dark] .topnav-links a:hover,
+  html[data-auto-dark] .topnav-links a.active { color: rgb(62, 183, 240); }
+  html[data-auto-dark] .topnav-links a.active::after { background: rgb(62, 183, 240); }
+  html[data-auto-dark] .cat-photo figcaption { color: #9a9ba3; }
+  html[data-auto-dark] .visitor-map-placeholder { border-color: #44465a; color: #9a9ba3; }
+}

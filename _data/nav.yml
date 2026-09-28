@@ -1,0 +1,15 @@
+# Items in the sticky bar at the top of every page.
+# "#something" jumps to that section of the homepage; anything else is a normal link.
+# Section ids are set in index.md, e.g. "## Welcome {#about}".
+- title: About
+  url: "#about"
+- title: Research
+  url: "#research"
+- title: Publications
+  url: "#publications"
+- title: Services
+  url: "#services"
+- title: Misc
+  url: "#misc"
+- title: Cats
+  url: /dollydayko.html

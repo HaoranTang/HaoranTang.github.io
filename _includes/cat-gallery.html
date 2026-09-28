@@ -1,0 +1,23 @@
+{%- comment -%}
+  Two-column photo gallery built from _data/cats.yml.
+  Each photo goes into whichever column is currently shorter, so the columns stay balanced.
+{%- endcomment -%}
+{%- assign left_h = 0.0 -%}
+{%- assign right_h = 0.0 -%}
+{%- assign left = "" -%}
+{%- assign right = "" -%}
+{%- for p in site.data.cats.photos -%}
+  {%- assign ratio = 1.0 -%}
+  {%- if p.w and p.h -%}{%- assign ratio = p.h | times: 1.0 | divided_by: p.w -%}{%- endif -%}
+  {%- assign has_caption = false -%}
+  {%- if p.caption and p.caption != "" -%}{%- assign has_caption = true -%}{%- assign ratio = ratio | plus: 0.12 -%}{%- endif -%}
+  {%- capture fig -%}<figure class="cat-photo"><a href="{{ p.file | relative_url }}"><img src="{{ p.file | relative_url }}" alt="{% if has_caption %}{{ p.caption | escape }}{% else %}Dolly and Dayko{% endif %}" loading="lazy"{% if p.w and p.h %} width="{{ p.w }}" height="{{ p.h }}"{% endif %}></a>{% if has_caption %}<figcaption>{{ p.caption | escape }}</figcaption>{% endif %}</figure>{%- endcapture -%}
+  {%- if left_h <= right_h -%}
+    {%- assign left = left | append: fig -%}
+    {%- assign left_h = left_h | plus: ratio -%}
+  {%- else -%}
+    {%- assign right = right | append: fig -%}
+    {%- assign right_h = right_h | plus: ratio -%}
+  {%- endif -%}
+{%- endfor -%}
+<div class="cat-gallery"><div class="cat-col">{{ left }}</div><div class="cat-col">{{ right }}</div></div>

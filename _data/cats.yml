@@ -1,0 +1,58 @@
+# Dolly & Dayko photo gallery (shown on dollydayko.html), newest first.
+# The phone upload page (/upload.html) adds new photos to the top of this list.
+# You can also edit it by hand. Fields:
+#   file:    path to the image inside the repo
+#   caption: optional text shown under the photo (keep it in double quotes)
+#   w, h:    image size in pixels, used to balance the two columns
+photos:
+  - file: assets/img/cats/IMG_9385.jpeg
+    w: 1558
+    h: 1600
+  - file: assets/img/cats/IMG_9427.jpeg
+    w: 1600
+    h: 1600
+  - file: assets/img/cats/IMG_5506.jpg
+    w: 1080
+    h: 1551
+  - file: assets/img/cats/IMG_5670.jpg
+    w: 1080
+    h: 1412
+  - file: assets/img/cats/IMG_5370.jpeg
+    w: 1600
+    h: 1200
+  - file: assets/img/cats/IMG_5230.jpeg
+    w: 1600
+    h: 763
+  - file: assets/img/cats/IMG_5876.jpeg
+    w: 1395
+    h: 1600
+  - file: assets/img/cats/IMG_5403.JPG
+    w: 900
+    h: 1600
+  - file: assets/img/cats/IMG_5237.JPG
+    w: 900
+    h: 1600
+  - file: assets/img/cats/IMG_5223.jpeg
+    w: 1600
+    h: 1200
+  - file: assets/img/cats/IMG_4915.jpg
+    w: 1080
+    h: 1338
+  - file: assets/img/cats/IMG_5226.jpeg
+    w: 1600
+    h: 1200
+  - file: assets/img/cats/IMG_4964.jpeg
+    w: 1600
+    h: 1600
+  - file: assets/img/cats/IMG_4969.jpeg
+    w: 1600
+    h: 1600
+  - file: assets/img/cats/IMG_4884.jpg
+    w: 1080
+    h: 1383
+  - file: assets/img/cats/IMG_4878.JPG
+    w: 900
+    h: 1600
+  - file: assets/img/cats/IMG_4871.jpg
+    w: 1600
+    h: 987
