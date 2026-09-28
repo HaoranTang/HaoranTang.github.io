@@ -5,12 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
-<title>Upload photos · Haoran Tang</title>
+<title>Update site · Haoran Tang</title>
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <!--
-  Private upload page for this website. Works on a phone.
+  Private page for updating this website from a phone or computer:
+  cat photos, CV, publications, other images, plus links for editing text.
   Photos are resized and re-encoded in the browser before upload, which drops all
-  metadata (GPS location, camera info). Then they are committed to the GitHub repo
-  with a fine-grained token that is stored only in this browser.
+  metadata (GPS location, camera info). Changes are committed to the GitHub repo
+  with a fine-grained token that only lives in this browser.
   No third-party scripts are loaded here on purpose.
 -->
 <style>
@@ -38,11 +40,13 @@
   .sub { color: var(--muted); margin: 0 0 20px; font-size: 15px; }
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin: 0 0 16px; }
   label.field { display: block; font-size: 14px; color: var(--muted); margin: 12px 0 4px; }
-  input[type=text], input[type=password] {
+  label.field b { color: var(--text); font-weight: 600; }
+  input[type=text], input[type=password], input[type=url], textarea {
     width: 100%; font: inherit; color: var(--text); background: var(--bg);
     border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; min-height: 44px;
   }
-  input:focus-visible, button:focus-visible, summary:focus-visible, .pick:focus-within { outline: 2px solid var(--link); outline-offset: 2px; }
+  textarea { min-height: 64px; resize: vertical; }
+  input:focus-visible, textarea:focus-visible, button:focus-visible, summary:focus-visible, .pick:focus-within { outline: 2px solid var(--link); outline-offset: 2px; }
   button { font: inherit; cursor: pointer; }
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
@@ -60,28 +64,29 @@
   code { background: var(--chip); padding: 1px 5px; border-radius: 4px; font-size: 90%; }
   .conn { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; font-size: 14px; color: var(--muted); margin: 0 0 16px; }
   .conn b { color: var(--text); font-weight: 600; }
-  .seg { display: grid; grid-template-columns: 1fr 1fr; background: var(--chip); border-radius: 10px; padding: 3px; margin: 0 0 14px; }
-  .seg button { border: 0; background: transparent; color: var(--muted); min-height: 38px; border-radius: 8px; font-size: 15px; }
-  .seg button[aria-pressed=true] { background: var(--card); color: var(--text); font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+  .tabs { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--chip); border-radius: 10px; padding: 3px; margin: 0 0 16px; }
+  .tabs button { border: 0; background: transparent; color: var(--muted); min-height: 40px; border-radius: 8px; font-size: 15px; }
+  .tabs button[aria-selected=true] { background: var(--card); color: var(--text); font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.12); }
   .pick {
+    position: relative;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
     min-height: 110px; border: 2px dashed var(--line); border-radius: 12px; cursor: pointer; text-align: center; padding: 16px;
   }
+  .pick.small-pick { min-height: 72px; }
   .pick strong { font-size: 17px; }
   .pick span { color: var(--muted); font-size: 14px; }
   .pick input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+  .pick.drag { border-color: var(--link); background: var(--chip); }
   ul.items { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 12px; }
   .item { display: grid; grid-template-columns: 84px 1fr; gap: 12px; align-items: start; }
   .item .thumb { width: 84px; height: 84px; border-radius: 8px; background: var(--chip); object-fit: cover; display: block; }
-  .item .meta { font-size: 13px; color: var(--muted); margin: 0 0 6px; }
+  .item .meta { font-size: 13px; color: var(--muted); margin: 0 0 6px; overflow-wrap: anywhere; }
   .item .meta.err { color: var(--err); }
   .item input[type=text] { min-height: 40px; padding: 8px 10px; font-size: 15px; }
   .item .row { display: flex; gap: 10px; align-items: center; margin-top: 6px; font-size: 14px; }
-  .item input[type=date] { font: inherit; font-size: 14px; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; min-height: 36px; margin-top: 6px; }
-  .item .datehint { font-size: 12px; color: var(--muted); }
-  .pick.drag { border-color: var(--link); background: var(--chip); }
   .item.removed { opacity: .45; }
   .item.removed .thumb { filter: grayscale(1); }
+  .fileinfo { margin-top: 10px; font-size: 14px; color: var(--muted); }
   .actions { margin-top: 16px; display: flex; gap: 10px; }
   .log { margin-top: 12px; font-size: 14px; color: var(--muted); white-space: pre-line; min-height: 1em; }
   .log.ok { color: var(--ok); }
@@ -89,18 +94,23 @@
   .result { margin-top: 10px; display: grid; gap: 8px; }
   .result code { display: block; word-break: break-all; padding: 8px; }
   .small { font-size: 13px; color: var(--muted); }
+  .check { display: flex; gap: 8px; align-items: flex-start; margin-top: 12px; font-size: 14px; }
+  .check input { margin-top: 3px; }
+  ul.edit { list-style: none; padding: 0; margin: 0; display: grid; gap: 2px; }
+  ul.edit a { display: flex; justify-content: space-between; gap: 12px; padding: 10px 2px; border-bottom: 1px solid var(--line); text-decoration: none; }
+  ul.edit a span:last-child { color: var(--muted); font-size: 13px; }
   [hidden] { display: none !important; }
 </style>
 </head>
 <body>
 <main>
-  <h1>Upload photos</h1>
-  <p class="sub">to <a href="./">haorantang.github.io</a> · <a href="./dollydayko.html">cats page</a></p>
+  <h1>Update site</h1>
+  <p class="sub"><a href="./">haorantang.github.io</a> · <a href="./dollydayko.html">cats page</a></p>
 
   <!-- One-time setup -->
   <section class="card" id="setup" hidden>
     <h2>Connect to GitHub (one time per device)</h2>
-    <p class="small" style="margin:0">This page needs a GitHub token that can change files in your website repository. It is saved only in this browser.</p>
+    <p class="small" style="margin:0">This page changes files in your website repository, so it needs a GitHub token that only you have.</p>
     <details open>
       <summary>How to get a token</summary>
       <ol class="help">
@@ -112,6 +122,7 @@
     </details>
     <label class="field" for="token">Token</label>
     <input type="password" id="token" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="github_pat_…">
+    <label class="check"><input type="checkbox" id="remember" checked> <span>Stay connected on this device. Untick on a shared device: the token is then forgotten when you close this tab.</span></label>
     <details>
       <summary>Repository settings</summary>
       <label class="field" for="repo">Repository (owner/name)</label>
@@ -119,7 +130,7 @@
       <label class="field" for="branch">Branch</label>
       <input type="text" id="branch" autocomplete="off" autocapitalize="off" spellcheck="false">
     </details>
-    <div class="actions"><button class="btn wide" id="connect">Save and connect</button></div>
+    <div class="actions"><button class="btn wide" id="connect">Connect</button></div>
     <div class="log" id="setupLog" role="status" aria-live="polite"></div>
   </section>
 
@@ -127,38 +138,116 @@
   <section id="app" hidden>
     <div class="conn">
       <span>Connected to <b id="connRepo"></b></span>
-      <button class="linkbtn" id="forget">Forget token on this device</button>
+      <button class="linkbtn" id="forget">Disconnect this device</button>
     </div>
 
-    <div class="card">
-      <h2>Add photos</h2>
-      <div class="seg" role="group" aria-label="Where should the photos go?">
-        <button type="button" data-mode="cats" aria-pressed="true">Cat gallery</button>
-        <button type="button" data-mode="other" aria-pressed="false">Other image</button>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" data-tab="cats" aria-selected="true">Cats</button>
+      <button type="button" role="tab" data-tab="cv" aria-selected="false">CV</button>
+      <button type="button" role="tab" data-tab="paper" aria-selected="false">Paper</button>
+      <button type="button" role="tab" data-tab="image" aria-selected="false">Image</button>
+    </div>
+
+    <!-- Cats -->
+    <div data-panel="cats">
+      <div class="card">
+        <h2>Add cat photos</h2>
+        <label class="pick" data-drop="photos">
+          <input type="file" id="catFiles" accept="image/*" multiple>
+          <strong>Choose photos</strong>
+          <span>or drop them here</span>
+          <span>Resized to 1600 px · location and camera info removed</span>
+        </label>
+        <ul class="items" id="catQueue"></ul>
+        <div class="actions"><button class="btn wide" id="catUpload" disabled>Upload</button></div>
+        <div class="log" id="catLog" role="status" aria-live="polite"></div>
+        <div class="result" id="catResult"></div>
       </div>
-      <p class="small" id="modeHelp" style="margin:0 0 12px"></p>
-      <label class="pick">
-        <input type="file" id="files" accept="image/*" multiple>
-        <strong>Choose photos</strong>
-        <span class="small">or drop them here</span>
-        <span>Resized to 1600 px · location and camera info removed · sorted by the date taken</span>
-      </label>
-      <ul class="items" id="queue"></ul>
-      <div class="actions"><button class="btn wide" id="upload" disabled>Upload</button></div>
-      <div class="log" id="uploadLog" role="status" aria-live="polite"></div>
-      <div class="result" id="result"></div>
+      <div class="card">
+        <details id="manage">
+          <summary>Edit captions or remove photos</summary>
+          <div class="log" id="manageLog" role="status" aria-live="polite"></div>
+          <ul class="items" id="gallery"></ul>
+          <div class="actions" id="manageActions" hidden>
+            <button class="btn" id="saveGallery" disabled>Save changes</button>
+            <button class="btn ghost" id="reloadGallery">Reload</button>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- CV -->
+    <div data-panel="cv" hidden>
+      <div class="card">
+        <h2>Replace CV</h2>
+        <p class="small" style="margin:0 0 12px">The new PDF replaces <a id="cvCurrent" href="#" target="_blank" rel="noopener"><code id="cvPath"></code></a>, so the CV icon on your site keeps working.</p>
+        <label class="pick small-pick" data-drop="cv">
+          <input type="file" id="cvFile" accept="application/pdf,.pdf">
+          <strong>Choose PDF</strong>
+          <span>or drop it here</span>
+        </label>
+        <div class="fileinfo" id="cvInfo"></div>
+        <div class="actions"><button class="btn wide" id="cvUpload" disabled>Replace CV</button></div>
+        <div class="log" id="cvLog" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <!-- Publication -->
+    <div data-panel="paper" hidden>
+      <div class="card">
+        <h2>Add a publication</h2>
+        <p class="small" style="margin:0">Added to the top of the list. To edit or reorder existing ones, use “Edit text” below.</p>
+        <label class="field" for="pTitle"><b>Title</b></label>
+        <input type="text" id="pTitle">
+        <label class="field" for="pAuthors"><b>Authors</b> · your name is bolded automatically</label>
+        <input type="text" id="pAuthors" placeholder="Haoran Tang, Rajiv Khanna">
+        <label class="field" for="pShort"><b>Badge</b> · short venue on the image</label>
+        <input type="text" id="pShort" placeholder="ICLR">
+        <label class="field" for="pVenue"><b>Venue line</b></label>
+        <input type="text" id="pVenue" placeholder="International Conference on Learning Representations (ICLR), 2026.">
+        <label class="field" for="pPdf">Paper / PDF link</label>
+        <input type="url" id="pPdf" placeholder="https://arxiv.org/abs/…">
+        <label class="field" for="pWeb">Project page</label>
+        <input type="url" id="pWeb">
+        <label class="field" for="pCode">Code</label>
+        <input type="url" id="pCode">
+        <label class="field" for="pBib">BibTeX link</label>
+        <input type="url" id="pBib">
+        <label class="field" for="pNote">Highlight (optional, shown in red)</label>
+        <input type="text" id="pNote" placeholder="Oral">
+        <label class="field">Teaser image (optional)</label>
+        <label class="pick small-pick" data-drop="paper">
+          <input type="file" id="pImage" accept="image/*">
+          <strong>Choose image</strong>
+          <span>Resized to 900 px wide</span>
+        </label>
+        <div class="fileinfo" id="pImageInfo"></div>
+        <div class="actions"><button class="btn wide" id="pAdd">Add publication</button></div>
+        <div class="log" id="pLog" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <!-- Other image -->
+    <div data-panel="image" hidden>
+      <div class="card">
+        <h2>Upload an image</h2>
+        <p class="small" style="margin:0 0 12px">Saved to <code>assets/img/uploads/</code>. You get a line to paste into any page.</p>
+        <label class="pick" data-drop="image">
+          <input type="file" id="imgFiles" accept="image/*" multiple>
+          <strong>Choose images</strong>
+          <span>or drop them here · resized to 1600 px, location removed</span>
+        </label>
+        <ul class="items" id="imgQueue"></ul>
+        <div class="actions"><button class="btn wide" id="imgUpload" disabled>Upload</button></div>
+        <div class="log" id="imgLog" role="status" aria-live="polite"></div>
+        <div class="result" id="imgResult"></div>
+      </div>
     </div>
 
     <div class="card">
-      <details id="manage">
-        <summary>Edit captions or remove gallery photos</summary>
-        <div class="log" id="manageLog" role="status" aria-live="polite"></div>
-        <ul class="items" id="gallery"></ul>
-        <div class="actions" id="manageActions" hidden>
-          <button class="btn" id="saveGallery" disabled>Save changes</button>
-          <button class="btn ghost" id="reloadGallery">Reload</button>
-        </div>
-      </details>
+      <h2>Edit text</h2>
+      <p class="small" style="margin:0 0 6px">Opens GitHub's editor (works on a phone). Tap <b>Commit changes</b> there to publish.</p>
+      <ul class="edit" id="editLinks"></ul>
     </div>
   </section>
 </main>
@@ -168,35 +257,45 @@
   'use strict';
   var DEFAULT_REPO = 'HaoranTang/HaoranTang.github.io';
   var DEFAULT_BRANCH = 'main';
+  var MY_NAME = 'Haoran Tang';
   var CATS_YML = '_data/cats.yml';
+  var PUBS_YML = '_data/publications.yml';
+  var CONFIG = '_config.yml';
   var CATS_DIR = 'assets/img/cats';
-  var OTHER_DIR = 'assets/img/uploads';
   var THUMB_DIR = CATS_DIR + '/thumbs';
-  var MAX_SIDE = 1600;
-  var THUMB_SIDE = 400;
-  var QUALITY = 0.85;
-  var DEFAULT_HEAD = '# Dolly & Dayko photo gallery (shown on dollydayko.html). Sorted by date on the page.';
+  var PUB_IMG_DIR = 'assets/img/pubs';
+  var OTHER_DIR = 'assets/img/uploads';
+  var DEFAULT_CV = 'assets/files/Haoran_Tang_CV.pdf';
+  var MAX_SIDE = 1600, THUMB_WIDTH = 600, PUB_WIDTH = 900, QUALITY = 0.85;
+  var DEFAULT_HEAD = '# Dolly & Dayko photo wall (dollydayko.html). The page shows these in a random mix.';
+  var EDIT_FILES = [
+    ['Homepage text', 'index.md'],
+    ['Publications list', PUBS_YML],
+    ['Cats page text', 'dollydayko.md'],
+    ['Name, links, profile photo', CONFIG],
+    ['Top bar', '_data/nav.yml']
+  ];
 
   var $ = function (s) { return document.querySelector(s); };
-  var store = {
-    get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
-    set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
-    del: function (k) { try { localStorage.removeItem(k); } catch (e) {} }
-  };
-  var cfg = {
-    token: store.get('upload.token') || '',
-    repo: store.get('upload.repo') || DEFAULT_REPO,
-    branch: store.get('upload.branch') || DEFAULT_BRANCH
-  };
-  var mode = 'cats';
-  var queue = [];
-  var seq = 0;
-  var busy = false;
-
-  function setLog(el, text, kind) {
-    el.textContent = text || '';
-    el.className = 'log' + (kind ? ' ' + kind : '');
+  function storage(kind) {
+    return {
+      get: function (k) { try { return window[kind].getItem(k); } catch (e) { return null; } },
+      set: function (k, v) { try { window[kind].setItem(k, v); } catch (e) {} },
+      del: function (k) { try { window[kind].removeItem(k); } catch (e) {} }
+    };
   }
+  var local = storage('localStorage'), session = storage('sessionStorage');
+  var cfg = {
+    token: local.get('upload.token') || session.get('upload.token') || '',
+    repo: local.get('upload.repo') || DEFAULT_REPO,
+    branch: local.get('upload.branch') || DEFAULT_BRANCH,
+    cvPath: DEFAULT_CV
+  };
+  var busy = false;
+  var seq = 0;
+
+  // ---------- small helpers ----------
+  function setLog(node, text, kind) { node.textContent = text || ''; node.className = 'log' + (kind ? ' ' + kind : ''); }
   function el(tag, attrs, children) {
     var n = document.createElement(tag);
     if (attrs) Object.keys(attrs).forEach(function (k) {
@@ -213,19 +312,24 @@
     var d = new Date();
     return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + '-' + pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds());
   }
+  function localStamp(t) {
+    var d = new Date(t);
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
   function rand() { return Math.random().toString(36).slice(2, 5); }
-  function slug(name) {
-    return (name || 'image').replace(/\.[^.]+$/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'image';
+  function slug(name, max) {
+    return (name || 'image').replace(/\.[^.]+$/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, max || 40).replace(/-+$/, '') || 'image';
+  }
+  function setBusy(on) {
+    busy = on;
+    document.querySelectorAll('.tabs button').forEach(function (b) { b.disabled = on; });
+    refreshButtons();
   }
 
   // ---------- GitHub API ----------
   function gh(path, opts) {
     opts = opts || {};
-    var headers = {
-      'Authorization': 'Bearer ' + cfg.token,
-      'Accept': 'application/vnd.github+json',
-      'X-GitHub-Api-Version': '2022-11-28'
-    };
+    var headers = { 'Authorization': 'Bearer ' + cfg.token, 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
     if (opts.body) headers['Content-Type'] = 'application/json';
     return fetch('https://api.github.com' + path, {
       method: opts.method || 'GET', headers: headers, cache: 'no-store',
@@ -242,18 +346,15 @@
     });
   }
   function explain(status, msg) {
-    if (status === 401) return 'GitHub rejected the token (expired or mistyped). Use "Forget token" and paste a new one.';
+    if (status === 401) return 'GitHub rejected the token (expired or mistyped). Tap "Disconnect this device" and paste a new one.';
     if (status === 403 && /not accessible|permission/i.test(msg)) return 'The token can read but not write. Give it Repository permissions → Contents → Read and write.';
     if (status === 404) return 'Not found: check the repository name, the branch, and that the token has access to this repository.';
     return 'GitHub error ' + status + ': ' + msg;
   }
   function repoPath(p) { return '/repos/' + cfg.repo + p; }
-
   function headInfo() {
     return gh(repoPath('/git/ref/heads/' + encodeURIComponent(cfg.branch))).then(function (ref) {
-      return gh(repoPath('/git/commits/' + ref.object.sha)).then(function (c) {
-        return { commit: ref.object.sha, tree: c.tree.sha };
-      });
+      return gh(repoPath('/git/commits/' + ref.object.sha)).then(function (c) { return { commit: ref.object.sha, tree: c.tree.sha }; });
     });
   }
   function b64ToText(b64) {
@@ -263,9 +364,8 @@
     return new TextDecoder().decode(bytes);
   }
   function readText(path, ref) {
-    return gh(repoPath('/contents/' + encodeURI(path) + '?ref=' + ref)).then(function (f) {
-      return b64ToText(f.content);
-    }, function (e) { if (e.status === 404) return null; throw e; });
+    return gh(repoPath('/contents/' + encodeURI(path) + '?ref=' + ref)).then(function (f) { return b64ToText(f.content); },
+      function (e) { if (e.status === 404) return null; throw e; });
   }
   function blobToB64(blob) {
     return new Promise(function (resolve, reject) {
@@ -275,14 +375,19 @@
       r.readAsDataURL(blob);
     });
   }
-
-  // Make one commit on top of the branch. build(catsYmlText) returns the list of changes.
-  // If someone else pushed in between, start over from the new head (up to 3 tries).
-  async function commit(message, build) {
+  function uploadBlob(blob) {
+    return blobToB64(blob).then(function (b64) {
+      return gh(repoPath('/git/blobs'), { method: 'POST', body: { content: b64, encoding: 'base64' } });
+    }).then(function (b) { return b.sha; });
+  }
+  // One commit on top of the branch. build({path: text}) returns the list of changes.
+  // If someone else pushed in between, start again from the new head (up to 3 tries).
+  async function commit(message, readPaths, build) {
     for (var attempt = 0; attempt < 3; attempt++) {
       var head = await headInfo();
-      var yml = await readText(CATS_YML, head.commit);
-      var changes = build(yml);
+      var texts = {};
+      for (var i = 0; i < readPaths.length; i++) texts[readPaths[i]] = await readText(readPaths[i], head.commit);
+      var changes = build(texts);
       var tree = await gh(repoPath('/git/trees'), { method: 'POST', body: {
         base_tree: head.tree,
         tree: changes.map(function (c) {
@@ -302,7 +407,7 @@
     }
   }
 
-  // ---------- _data/cats.yml (small reader/writer for this file's simple format) ----------
+  // ---------- _data/cats.yml (reader/writer for this file's simple format) ----------
   function scalar(v) {
     v = v.trim();
     if (v.charAt(0) === '"') { try { return JSON.parse(v); } catch (e) { return v.slice(1, -1); } }
@@ -345,8 +450,7 @@
     });
     return out;
   }
-
-  // Newest first by date taken; photos without a date go last, otherwise keep their order.
+  // Keep the file tidy: newest first by date taken, undated last.
   function sortPhotos(list) {
     return list.map(function (p, i) { return [p, i]; }).sort(function (a, b) {
       var da = a[0].date || '', db = b[0].date || '';
@@ -354,17 +458,8 @@
       return a[1] - b[1];
     }).map(function (x) { return x[0]; });
   }
-  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  function prettyDate(d) {
-    var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(d || '');
-    return m ? MONTHS[+m[2] - 1] + ' ' + (+m[3]) + ', ' + m[1] : '';
-  }
-  function localStamp(t) {
-    var d = new Date(t);
-    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
-  }
 
-  // ---------- When was the photo taken? (read EXIF before it is thrown away) ----------
+  // ---------- When was a photo taken? (read EXIF before it is thrown away; used for file names) ----------
   function readTakenDate(file) {
     return file.slice(0, 256 * 1024).arrayBuffer().then(function (buf) {
       var v = new DataView(buf);
@@ -404,192 +499,193 @@
 
   // ---------- Image processing (in the browser) ----------
   // Drawing to a canvas and re-encoding keeps only the pixels: EXIF (GPS, camera, time) is dropped.
-  function processImage(file) {
+  function loadImage(file) {
     var src = URL.createObjectURL(file);
     return new Promise(function (resolve, reject) {
       var img = new Image();
       img.onload = function () { resolve(img); };
       img.onerror = function () {
         reject(new Error(/hei[cf]/i.test(file.type + file.name)
-          ? 'This browser cannot open HEIC photos. On iPhone, pick photos from Safari (they are converted automatically), or export as JPEG.'
+          ? 'This browser cannot open HEIC photos. On iPhone, pick photos in Safari (they are converted automatically), or export as JPEG.'
           : 'Could not open this file as an image.'));
       };
       img.src = src;
-    }).then(function (img) {
-      var sw = img.naturalWidth, sh = img.naturalHeight;
-      var s = Math.min(1, MAX_SIDE / Math.max(sw, sh));
-      var w = Math.max(1, Math.round(sw * s)), h = Math.max(1, Math.round(sh * s));
-      var c = document.createElement('canvas');
-      c.width = w; c.height = h;
-      var ctx = c.getContext('2d');
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(0, 0, w, h);
-      ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = 'high';
-      ctx.drawImage(img, 0, 0, w, h);
-      // Square thumbnail from the centre, like a phone's photo grid.
-      var side = Math.min(sw, sh), ts = Math.min(THUMB_SIDE, side);
-      var tc = document.createElement('canvas');
-      tc.width = ts; tc.height = ts;
-      var tctx = tc.getContext('2d');
-      tctx.fillStyle = '#fff';
-      tctx.fillRect(0, 0, ts, ts);
-      tctx.imageSmoothingEnabled = true;
-      tctx.imageSmoothingQuality = 'high';
-      tctx.drawImage(img, (sw - side) / 2, (sh - side) / 2, side, side, 0, 0, ts, ts);
-      function encode(canvas, q) {
-        return new Promise(function (resolve, reject) {
-          canvas.toBlob(function (b) { b ? resolve(b) : reject(new Error('Could not convert the image.')); }, 'image/jpeg', q);
-        });
-      }
-      return Promise.all([encode(c, QUALITY), encode(tc, 0.8)]).then(function (r) {
-        return { blob: r[0], thumb: r[1], w: w, h: h };
-      });
-    }).finally(function () { URL.revokeObjectURL(src); });
+    }).finally(function () { setTimeout(function () { URL.revokeObjectURL(src); }, 0); });
   }
-
-  // ---------- Upload queue UI ----------
-  function refreshUploadButton() {
-    var ready = queue.filter(function (q) { return q.state === 'ready'; }).length;
-    var pending = queue.some(function (q) { return q.state === 'processing'; });
-    var btn = $('#upload');
-    btn.disabled = busy || pending || ready === 0;
-    btn.textContent = pending ? 'Preparing photos…' : ready ? 'Upload ' + ready + ' photo' + (ready > 1 ? 's' : '') : 'Upload';
-  }
-  function renderItem(it) {
-    if (!it.node) {
-      it.thumb = el('img', { class: 'thumb', alt: '' });
-      it.meta = el('p', { class: 'meta', text: 'Preparing…' });
-      it.caption = el('input', { type: 'text', placeholder: 'Caption (optional)', 'aria-label': 'Caption' });
-      it.caption.addEventListener('input', function () { it.text = it.caption.value; });
-      it.dateInput = el('input', { type: 'date', 'aria-label': 'Date taken' });
-      it.dateInput.addEventListener('change', function () {
-        if (/^\d{4}-\d{2}-\d{2}$/.test(it.dateInput.value)) { it.date = it.dateInput.value + ' 12:00'; it.dateGuessed = false; renderItem(it); }
-      });
-      it.dateHint = el('span', { class: 'datehint' });
-      var rm = el('button', { type: 'button', class: 'linkbtn', text: 'Remove' });
-      rm.addEventListener('click', function () {
-        if (busy) return;
-        queue = queue.filter(function (q) { return q !== it; });
-        if (it.preview) URL.revokeObjectURL(it.preview);
-        it.node.remove();
-        refreshUploadButton();
-      });
-      it.dateRow = el('div', { class: 'row' }, [it.dateInput, it.dateHint]);
-      it.node = el('li', { class: 'item' }, [it.thumb, el('div', null, [it.meta, it.caption, it.dateRow, el('div', { class: 'row' }, [rm])])]);
-      $('#queue').appendChild(it.node);
-    }
-    it.caption.hidden = mode !== 'cats' || it.state === 'error';
-    it.dateRow.hidden = mode !== 'cats' || it.state !== 'ready';
-    if (it.date) {
-      it.dateInput.value = it.date.slice(0, 10);
-      it.dateHint.textContent = it.dateGuessed ? 'No date in this photo; change it if needed' : 'Date taken';
-    }
-    if (it.state === 'ready') {
-      it.thumb.src = it.preview;
-      it.meta.textContent = it.w + '×' + it.h + ' · ' + kb(it.blob.size) + ' · location removed';
-      it.meta.className = 'meta';
-    } else if (it.state === 'error') {
-      it.meta.textContent = it.name + ': ' + it.error;
-      it.meta.className = 'meta err';
-    }
-  }
-  async function addFiles(files) {
-    $('#result').textContent = '';
-    setLog($('#uploadLog'), '');
-    var items = Array.prototype.map.call(files, function (f) {
-      var it = { id: ++seq, file: f, name: f.name, state: 'processing', text: '' };
-      queue.push(it); renderItem(it); return it;
+  function render(img, maxW, maxH, type, quality) {
+    var sw = img.naturalWidth, sh = img.naturalHeight;
+    var s = Math.min(1, maxW / sw, maxH / sh);
+    var w = Math.max(1, Math.round(sw * s)), h = Math.max(1, Math.round(sh * s));
+    var c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    var ctx = c.getContext('2d');
+    if (type === 'image/jpeg') { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h); }
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(img, 0, 0, w, h);
+    return new Promise(function (resolve, reject) {
+      c.toBlob(function (b) { b ? resolve({ blob: b, w: w, h: h }) : reject(new Error('Could not convert the image.')); }, type, quality);
     });
-    refreshUploadButton();
-    for (var i = 0; i < items.length; i++) {
-      var it = items[i];
-      try {
-        var taken = await readTakenDate(it.file);
-        it.date = taken || localStamp(it.file.lastModified || Date.now());
-        it.dateGuessed = !taken;
-        var r = await processImage(it.file);
-        it.blob = r.blob; it.thumbBlob = r.thumb; it.w = r.w; it.h = r.h; it.preview = URL.createObjectURL(r.thumb); it.state = 'ready';
-      } catch (e) {
-        it.state = 'error'; it.error = e.message;
-      }
-      it.file = null;
-      renderItem(it);
-      refreshUploadButton();
-    }
   }
 
-  async function upload() {
-    var items = queue.filter(function (q) { return q.state === 'ready'; });
+  // ---------- Photo queues (cats + other images) ----------
+  function makeQueue(opts) {
+    var q = { items: [], opts: opts };
+    q.add = async function (files) {
+      $(opts.result).textContent = '';
+      setLog($(opts.log), '');
+      var added = files.map(function (f) {
+        var it = { id: ++seq, file: f, name: f.name, state: 'processing', text: '' };
+        q.items.push(it); q.draw(it); return it;
+      });
+      refreshButtons();
+      for (var i = 0; i < added.length; i++) {
+        var it = added[i];
+        try {
+          var taken = await readTakenDate(it.file);
+          it.date = taken || localStamp(it.file.lastModified || Date.now());
+          var img = await loadImage(it.file);
+          var full = await render(img, MAX_SIDE, MAX_SIDE, 'image/jpeg', QUALITY);
+          it.blob = full.blob; it.w = full.w; it.h = full.h;
+          if (opts.thumbs) it.thumbBlob = (await render(img, THUMB_WIDTH, 100000, 'image/jpeg', 0.8)).blob;
+          it.preview = URL.createObjectURL(it.thumbBlob || it.blob);
+          it.state = 'ready';
+        } catch (e) {
+          it.state = 'error'; it.error = e.message;
+        }
+        it.file = null;
+        q.draw(it);
+        refreshButtons();
+      }
+    };
+    q.draw = function (it) {
+      if (!it.node) {
+        it.thumb = el('img', { class: 'thumb', alt: '' });
+        it.meta = el('p', { class: 'meta', text: 'Preparing…' });
+        it.caption = el('input', { type: 'text', placeholder: 'Caption (optional)', 'aria-label': 'Caption' });
+        it.caption.addEventListener('input', function () { it.text = it.caption.value; });
+        var rm = el('button', { type: 'button', class: 'linkbtn', text: 'Remove' });
+        rm.addEventListener('click', function () {
+          if (busy) return;
+          q.items = q.items.filter(function (x) { return x !== it; });
+          if (it.preview) URL.revokeObjectURL(it.preview);
+          it.node.remove();
+          refreshButtons();
+        });
+        it.node = el('li', { class: 'item' }, [it.thumb, el('div', null, [it.meta, it.caption, el('div', { class: 'row' }, [rm])])]);
+        $(opts.list).appendChild(it.node);
+      }
+      it.caption.hidden = !opts.captions || it.state === 'error';
+      if (it.state === 'ready') {
+        it.thumb.src = it.preview;
+        it.meta.textContent = it.w + '×' + it.h + ' · ' + kb(it.blob.size) + ' · location removed';
+        it.meta.className = 'meta';
+      } else if (it.state === 'error') {
+        it.meta.textContent = it.name + ': ' + it.error;
+        it.meta.className = 'meta err';
+      }
+    };
+    q.ready = function () { return q.items.filter(function (x) { return x.state === 'ready'; }); };
+    q.pending = function () { return q.items.some(function (x) { return x.state === 'processing'; }); };
+    q.clearDone = function (done) {
+      q.items.filter(function (x) { return done.indexOf(x) >= 0 || x.state === 'error'; }).forEach(function (x) {
+        if (x.preview) URL.revokeObjectURL(x.preview);
+        x.node.remove();
+      });
+      q.items = q.items.filter(function (x) { return done.indexOf(x) < 0 && x.state !== 'error'; });
+    };
+    return q;
+  }
+  var catQ = makeQueue({ list: '#catQueue', log: '#catLog', result: '#catResult', thumbs: true, captions: true });
+  var imgQ = makeQueue({ list: '#imgQueue', log: '#imgLog', result: '#imgResult', thumbs: false, captions: false });
+
+  function queueButton(btn, q) {
+    var ready = q.ready().length, pending = q.pending();
+    btn.disabled = busy || pending || ready === 0;
+    btn.textContent = pending ? 'Preparing…' : ready ? 'Upload ' + ready + ' photo' + (ready > 1 ? 's' : '') : 'Upload';
+  }
+  function refreshButtons() {
+    queueButton($('#catUpload'), catQ);
+    queueButton($('#imgUpload'), imgQ);
+    $('#cvUpload').disabled = busy || !cvFile;
+    $('#pAdd').disabled = busy;
+    $('#saveGallery').disabled = busy || !galleryDirty();
+  }
+
+  async function uploadCats() {
+    var items = catQ.ready();
     if (!items.length || busy) return;
-    busy = true; refreshUploadButton();
-    var log = $('#uploadLog');
-    var dir = mode === 'cats' ? CATS_DIR : OTHER_DIR;
-    var when = stamp();
+    setBusy(true);
+    var log = $('#catLog');
     try {
       for (var i = 0; i < items.length; i++) {
         var it = items[i];
-        var base = mode === 'cats' ? it.date.replace(/[: ]/g, '-').replace(/-(\d\d)-(\d\d)$/, '-$1$2') + '-' + rand() : slug(it.name) + '-' + when;
-        it.path = dir + '/' + base + '.jpg';
+        var base = it.date.replace(/[: ]/g, '-').replace(/-(\d\d)-(\d\d)$/, '-$1$2') + '-' + rand();
+        it.path = CATS_DIR + '/' + base + '.jpg';
+        it.thumbPath = THUMB_DIR + '/' + base + '.jpg';
         setLog(log, 'Sending photo ' + (i + 1) + ' of ' + items.length + '…');
-        var b = await gh(repoPath('/git/blobs'), { method: 'POST', body: { content: await blobToB64(it.blob), encoding: 'base64' } });
-        it.sha = b.sha;
-        if (mode === 'cats') {
-          it.thumbPath = THUMB_DIR + '/' + base + '.jpg';
-          var tb = await gh(repoPath('/git/blobs'), { method: 'POST', body: { content: await blobToB64(it.thumbBlob), encoding: 'base64' } });
-          it.thumbSha = tb.sha;
-        }
+        it.sha = await uploadBlob(it.blob);
+        it.thumbSha = await uploadBlob(it.thumbBlob);
       }
       setLog(log, 'Saving to the website…');
       var n = items.length, plural = n > 1 ? 's' : '';
-      var message = mode === 'cats' ? 'Add ' + n + ' cat photo' + plural + ' (from upload page)' : 'Upload ' + n + ' image' + plural + ' (from upload page)';
-      var uploadMode = mode;
-      await commit(message, function (yml) {
+      await commit('Add ' + n + ' cat photo' + plural + ' (from upload page)', [CATS_YML], function (t) {
         var changes = [];
         items.forEach(function (it) {
           changes.push({ path: it.path, sha: it.sha });
-          if (it.thumbPath) changes.push({ path: it.thumbPath, sha: it.thumbSha });
+          changes.push({ path: it.thumbPath, sha: it.thumbSha });
         });
-        if (uploadMode === 'cats') {
-          var doc = parseCats(yml);
-          var added = items.map(function (it) { return { file: it.path, thumb: it.thumbPath, date: it.date, caption: (it.text || '').trim(), w: it.w, h: it.h, extra: [] }; });
-          doc.photos = sortPhotos(added.concat(doc.photos));
-          changes.push({ path: CATS_YML, content: serializeCats(doc) });
-        }
+        var doc = parseCats(t[CATS_YML]);
+        var added = items.map(function (it) { return { file: it.path, thumb: it.thumbPath, date: it.date, caption: (it.text || '').trim(), w: it.w, h: it.h, extra: [] }; });
+        doc.photos = sortPhotos(added.concat(doc.photos));
+        changes.push({ path: CATS_YML, content: serializeCats(doc) });
         return changes;
       });
-      var res = $('#result');
-      res.textContent = '';
-      if (uploadMode === 'cats') {
-        setLog(log, 'Done! ' + n + ' photo' + plural + ' added and sorted by date. The cats page updates in about a minute.', 'ok');
-        res.appendChild(el('a', { href: './dollydayko.html', text: 'Open the cats page →' }));
-      } else {
-        setLog(log, 'Done! Use these paths in your pages (live in about a minute):', 'ok');
-        items.forEach(function (it) {
-          var md = '![](' + it.path + ')';
-          var copy = el('button', { type: 'button', class: 'btn ghost', text: 'Copy' });
-          copy.addEventListener('click', function () {
-            (navigator.clipboard ? navigator.clipboard.writeText(md) : Promise.reject()).then(
-              function () { copy.textContent = 'Copied'; }, function () { copy.textContent = 'Select the text to copy'; });
-          });
-          res.appendChild(el('div', null, [el('code', { text: md }), copy]));
-        });
-      }
-      var done = queue.filter(function (q) { return items.indexOf(q) >= 0 || q.state === 'error'; });
-      done.forEach(function (it) { if (it.preview) URL.revokeObjectURL(it.preview); it.node.remove(); });
-      queue = queue.filter(function (q) { return done.indexOf(q) < 0; });
+      setLog(log, 'Done! ' + n + ' photo' + plural + ' added. The cats page updates in about a minute.', 'ok');
+      $('#catResult').replaceChildren(el('a', { href: './dollydayko.html', text: 'Open the cats page →' }));
+      catQ.clearDone(items);
       if ($('#manage').open) loadGallery();
     } catch (e) {
       setLog(log, e.message + '\nNothing was changed on the website.', 'err');
-    } finally {
-      busy = false; refreshUploadButton();
-    }
+    } finally { setBusy(false); }
   }
 
-  // ---------- Manage gallery ----------
+  async function uploadImages() {
+    var items = imgQ.ready();
+    if (!items.length || busy) return;
+    setBusy(true);
+    var log = $('#imgLog'), when = stamp();
+    try {
+      for (var i = 0; i < items.length; i++) {
+        items[i].path = OTHER_DIR + '/' + slug(items[i].name) + '-' + when + (items.length > 1 ? '-' + (i + 1) : '') + '.jpg';
+        setLog(log, 'Sending image ' + (i + 1) + ' of ' + items.length + '…');
+        items[i].sha = await uploadBlob(items[i].blob);
+      }
+      setLog(log, 'Saving to the website…');
+      await commit('Upload ' + items.length + ' image' + (items.length > 1 ? 's' : '') + ' (from upload page)', [], function () {
+        return items.map(function (it) { return { path: it.path, sha: it.sha }; });
+      });
+      setLog(log, 'Done! Paste these lines into a page (live in about a minute):', 'ok');
+      var res = $('#imgResult');
+      res.textContent = '';
+      items.forEach(function (it) {
+        var md = '![](' + it.path + ')';
+        var copy = el('button', { type: 'button', class: 'btn ghost', text: 'Copy' });
+        copy.addEventListener('click', function () {
+          (navigator.clipboard ? navigator.clipboard.writeText(md) : Promise.reject()).then(
+            function () { copy.textContent = 'Copied'; }, function () { copy.textContent = 'Select the text to copy'; });
+        });
+        res.appendChild(el('div', null, [el('code', { text: md }), copy]));
+      });
+      imgQ.clearDone(items);
+    } catch (e) {
+      setLog(log, e.message + '\nNothing was changed on the website.', 'err');
+    } finally { setBusy(false); }
+  }
+
+  // ---------- Manage cat photos ----------
   var gallery = [];
   function galleryDirty() { return gallery.some(function (g) { return g.removed || (g.input.value.trim() !== (g.photo.caption || '')); }); }
-  function refreshSave() { $('#saveGallery').disabled = busy || !galleryDirty(); }
   async function loadGallery() {
     var log = $('#manageLog');
     $('#gallery').textContent = '';
@@ -599,9 +695,9 @@
     try {
       var head = await headInfo();
       var doc = parseCats(await readText(CATS_YML, head.commit));
-      if (!doc.photos.length) { setLog(log, 'The gallery is empty.'); return; }
-      setLog(log, doc.photos.length + ' photos, newest first. Removing a photo also deletes its file.');
-      sortPhotos(doc.photos).forEach(function (p) {
+      if (!doc.photos.length) { setLog(log, 'No photos yet.'); return; }
+      setLog(log, doc.photos.length + ' photos. Removing a photo also deletes its files.');
+      doc.photos.forEach(function (p) {
         var g = { photo: p, removed: false };
         var shown = p.thumb || p.file;
         var img = el('img', { class: 'thumb', alt: '', loading: 'lazy', src: './' + shown });
@@ -611,27 +707,27 @@
         });
         g.input = el('input', { type: 'text', placeholder: 'Caption (optional)', 'aria-label': 'Caption' });
         g.input.value = p.caption || '';
-        g.input.addEventListener('input', refreshSave);
+        g.input.addEventListener('input', refreshButtons);
         var rm = el('button', { type: 'button', class: 'linkbtn', text: 'Remove' });
+        var li = el('li', { class: 'item' }, [img, el('div', null, [el('p', { class: 'meta', text: p.file.split('/').pop() }), g.input, el('div', { class: 'row' }, [rm])])]);
         rm.addEventListener('click', function () {
           g.removed = !g.removed;
           rm.textContent = g.removed ? 'Undo remove' : 'Remove';
           li.classList.toggle('removed', g.removed);
-          refreshSave();
+          refreshButtons();
         });
-        var li = el('li', { class: 'item' }, [img, el('div', null, [el('p', { class: 'meta', text: (p.date ? prettyDate(p.date) + ' · ' : '') + p.file.split('/').pop() }), g.input, el('div', { class: 'row' }, [rm])])]);
         $('#gallery').appendChild(li);
         gallery.push(g);
       });
       $('#manageActions').hidden = false;
-      refreshSave();
+      refreshButtons();
     } catch (e) {
       setLog(log, e.message, 'err');
     }
   }
   async function saveGallery() {
     if (busy || !galleryDirty()) return;
-    busy = true; refreshSave(); refreshUploadButton();
+    setBusy(true);
     var log = $('#manageLog');
     setLog(log, 'Saving…');
     var removed = {}, captions = {};
@@ -640,8 +736,8 @@
       else captions[g.photo.file] = g.input.value.trim();
     });
     try {
-      await commit('Update cat gallery (from upload page)', function (yml) {
-        var doc = parseCats(yml);
+      await commit('Update cat photos (from upload page)', [CATS_YML], function (t) {
+        var doc = parseCats(t[CATS_YML]);
         var changes = [];
         doc.photos = doc.photos.filter(function (p) {
           if (!removed[p.file]) return true;
@@ -649,8 +745,8 @@
           if (p.thumb && p.thumb.indexOf(THUMB_DIR + '/') === 0) changes.push({ path: p.thumb, remove: true });
           return false;
         });
-        doc.photos = sortPhotos(doc.photos);
         doc.photos.forEach(function (p) { if (p.file in captions) p.caption = captions[p.file]; });
+        doc.photos = sortPhotos(doc.photos);
         changes.push({ path: CATS_YML, content: serializeCats(doc) });
         return changes;
       });
@@ -659,16 +755,126 @@
       setLog(log, 'Saved. The cats page updates in about a minute.', 'ok');
     } catch (e) {
       setLog(log, e.message + '\nNothing was changed on the website.', 'err');
-    } finally {
-      busy = false; refreshSave(); refreshUploadButton();
+    } finally { setBusy(false); }
+  }
+
+  // ---------- CV ----------
+  var cvFile = null;
+  function pickCv(f) {
+    $('#cvLog').textContent = '';
+    if (!f) return;
+    if (!/pdf$/i.test(f.type) && !/\.pdf$/i.test(f.name)) { cvFile = null; $('#cvInfo').textContent = f.name + ' is not a PDF.'; refreshButtons(); return; }
+    if (f.size > 20 * 1048576) { cvFile = null; $('#cvInfo').textContent = f.name + ' is larger than 20 MB; please export a smaller PDF.'; refreshButtons(); return; }
+    cvFile = f;
+    $('#cvInfo').textContent = f.name + ' · ' + kb(f.size);
+    refreshButtons();
+  }
+  async function uploadCv() {
+    if (!cvFile || busy) return;
+    setBusy(true);
+    var log = $('#cvLog');
+    try {
+      setLog(log, 'Sending PDF…');
+      var sha = await uploadBlob(cvFile);
+      setLog(log, 'Saving to the website…');
+      await commit('Update CV (from upload page)', [], function () { return [{ path: cfg.cvPath, sha: sha }]; });
+      setLog(log, 'Done! Your CV link now opens the new PDF (live in about a minute; reload if you see the old one).', 'ok');
+      cvFile = null; $('#cvInfo').textContent = '';
+    } catch (e) {
+      setLog(log, e.message + '\nNothing was changed on the website.', 'err');
+    } finally { setBusy(false); }
+  }
+
+  // ---------- Publication ----------
+  var pubImage = null;
+  async function pickPubImage(f) {
+    pubImage = null;
+    $('#pImageInfo').textContent = f ? 'Preparing…' : '';
+    if (!f) return;
+    try {
+      var img = await loadImage(f);
+      var type = /png/i.test(f.type) ? 'image/png' : 'image/jpeg';
+      var r = await render(img, PUB_WIDTH, 100000, type, 0.9);
+      pubImage = { blob: r.blob, ext: type === 'image/png' ? 'png' : 'jpg' };
+      $('#pImageInfo').textContent = f.name + ' → ' + r.w + '×' + r.h + ' · ' + kb(r.blob.size);
+    } catch (e) {
+      $('#pImageInfo').textContent = e.message;
     }
+  }
+  function boldMe(authors) {
+    if (authors.indexOf('<strong>') >= 0) return authors;
+    return authors.replace(new RegExp(MY_NAME.replace(/ /g, '\\s+') + '(\\*?)'), '<strong>' + MY_NAME + '$1</strong>');
+  }
+  async function addPublication() {
+    if (busy) return;
+    var v = function (id) { return $(id).value.trim(); };
+    var p = { title: v('#pTitle'), authors: v('#pAuthors'), short: v('#pShort'), venue: v('#pVenue'),
+      pdf: v('#pPdf'), web: v('#pWeb'), code: v('#pCode'), bib: v('#pBib'), note: v('#pNote') };
+    var log = $('#pLog');
+    var missing = [['title', 'Title'], ['authors', 'Authors'], ['short', 'Badge'], ['venue', 'Venue line']].filter(function (m) { return !p[m[0]]; });
+    if (missing.length) { setLog(log, 'Please fill in: ' + missing.map(function (m) { return m[1]; }).join(', ') + '.', 'err'); return; }
+    setBusy(true);
+    try {
+      var imgPath = null, imgSha = null;
+      if (pubImage) {
+        imgPath = PUB_IMG_DIR + '/' + slug(p.title, 50) + '-' + rand() + '.' + pubImage.ext;
+        setLog(log, 'Sending image…');
+        imgSha = await uploadBlob(pubImage.blob);
+      }
+      var q = JSON.stringify;
+      var entry = '  - title: ' + q(p.title) + '\n'
+        + '    authors: ' + q(boldMe(p.authors)) + '\n'
+        + '    conference_short: ' + q(p.short) + '\n'
+        + '    conference: ' + q(p.venue) + '\n'
+        + (p.pdf ? '    pdf: ' + q(p.pdf) + '\n' : '')
+        + ((p.web || p.pdf) ? '    website: ' + q(p.web || p.pdf) + '\n' : '')
+        + (p.code ? '    code: ' + q(p.code) + '\n' : '')
+        + (p.bib ? '    bibtex: ' + q(p.bib) + '\n' : '')
+        + (imgPath ? '    image: ./' + imgPath + '\n' : '')
+        + (p.note ? '    notes: ' + q(p.note) + '\n' : '');
+      setLog(log, 'Saving to the website…');
+      await commit('Add publication: ' + p.title.slice(0, 60) + ' (from upload page)', [PUBS_YML], function (t) {
+        var text = (t[PUBS_YML] || 'main:\n').replace(/\r\n/g, '\n');
+        var m = /^main:[ \t]*\n/m.exec(text);
+        if (!m) throw new Error(PUBS_YML + ' has no "main:" line, so it is not safe to edit it from here.');
+        var at = m.index + m[0].length;
+        var rest = text.slice(at).replace(/^\n+/, '');
+        var out = text.slice(0, at) + '\n' + entry + (rest ? '\n' + rest : '');
+        var changes = [{ path: PUBS_YML, content: out }];
+        if (imgPath) changes.push({ path: imgPath, sha: imgSha });
+        return changes;
+      });
+      setLog(log, 'Done! “' + p.title + '” is now first in your publication list (live in about a minute).', 'ok');
+      ['#pTitle', '#pAuthors', '#pShort', '#pVenue', '#pPdf', '#pWeb', '#pCode', '#pBib', '#pNote'].forEach(function (id) { $(id).value = ''; });
+      pubImage = null; $('#pImageInfo').textContent = '';
+    } catch (e) {
+      setLog(log, e.message + '\nNothing was changed on the website.', 'err');
+    } finally { setBusy(false); }
   }
 
   // ---------- Setup / wiring ----------
+  async function loadCvPath() {
+    try {
+      var head = await headInfo();
+      var conf = await readText(CONFIG, head.commit);
+      var m = conf && /^cv_link:\s*["']?([^"'#\s]+)/m.exec(conf);
+      if (m && !/^https?:/i.test(m[1])) cfg.cvPath = m[1].replace(/^\.?\//, '');
+    } catch (e) { /* keep default */ }
+    $('#cvPath').textContent = cfg.cvPath;
+    $('#cvCurrent').href = './' + cfg.cvPath;
+  }
   function showApp() {
     $('#setup').hidden = true;
     $('#app').hidden = false;
     $('#connRepo').textContent = cfg.repo + (cfg.branch !== DEFAULT_BRANCH ? ' (' + cfg.branch + ')' : '');
+    var list = $('#editLinks');
+    list.textContent = '';
+    EDIT_FILES.forEach(function (f) {
+      list.appendChild(el('li', null, [el('a', { href: 'https://github.com/' + cfg.repo + '/edit/' + cfg.branch + '/' + f[1], target: '_blank', rel: 'noopener' },
+        [el('span', { text: f[0] }), el('span', { text: f[1] })])]));
+    });
+    $('#cvPath').textContent = cfg.cvPath;
+    loadCvPath();
   }
   function showSetup() {
     $('#app').hidden = true;
@@ -687,9 +893,10 @@
     setLog(log, 'Checking…');
     try {
       await headInfo();
-      store.set('upload.token', cfg.token);
-      store.set('upload.repo', cfg.repo);
-      store.set('upload.branch', cfg.branch);
+      local.del('upload.token'); session.del('upload.token');
+      ($('#remember').checked ? local : session).set('upload.token', cfg.token);
+      local.set('upload.repo', cfg.repo);
+      local.set('upload.branch', cfg.branch);
       setLog(log, '');
       showApp();
     } catch (e) {
@@ -698,48 +905,54 @@
       $('#connect').disabled = false;
     }
   }
-  function setMode(m) {
-    mode = m;
-    document.querySelectorAll('.seg button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === m)); });
-    $('#modeHelp').textContent = m === 'cats'
-      ? 'Photos are added to the cats album and filed under the month they were taken.'
-      : 'Photos go to ' + OTHER_DIR + '/ and you get a path to use in any page.';
-    queue.forEach(renderItem);
+  function selectTab(name) {
+    document.querySelectorAll('.tabs button').forEach(function (b) { b.setAttribute('aria-selected', String(b.getAttribute('data-tab') === name)); });
+    document.querySelectorAll('[data-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-panel') !== name; });
+    try { sessionStorage.setItem('upload.tab', name); } catch (e) {}
+  }
+  function onDrop(zone, handler) {
+    ['dragenter', 'dragover'].forEach(function (t) { zone.addEventListener(t, function (e) { e.preventDefault(); zone.classList.add('drag'); }); });
+    ['dragleave', 'drop'].forEach(function (t) { zone.addEventListener(t, function (e) { e.preventDefault(); zone.classList.remove('drag'); }); });
+    zone.addEventListener('drop', function (e) {
+      var files = Array.prototype.slice.call((e.dataTransfer && e.dataTransfer.files) || []);
+      if (files.length && !busy) handler(files);
+    });
+  }
+  function onPick(input, handler) {
+    input.addEventListener('change', function () {
+      var files = Array.prototype.slice.call(input.files || []);
+      input.value = '';
+      if (files.length) handler(files);
+    });
   }
 
   $('#connect').addEventListener('click', connect);
   $('#token').addEventListener('keydown', function (e) { if (e.key === 'Enter') connect(); });
   $('#forget').addEventListener('click', function () {
-    store.del('upload.token');
+    local.del('upload.token'); session.del('upload.token');
     cfg.token = '';
     showSetup();
   });
-  document.querySelectorAll('.seg button').forEach(function (b) {
-    b.addEventListener('click', function () { if (!busy) setMode(b.getAttribute('data-mode')); });
+  document.querySelectorAll('.tabs button').forEach(function (b) {
+    b.addEventListener('click', function () { if (!busy) selectTab(b.getAttribute('data-tab')); });
   });
-  $('#files').addEventListener('change', function (e) {
-    var files = Array.prototype.slice.call(e.target.files || []);
-    e.target.value = '';
-    if (files.length) addFiles(files);
-  });
-  var pick = document.querySelector('.pick');
-  ['dragenter', 'dragover'].forEach(function (t) {
-    pick.addEventListener(t, function (e) { e.preventDefault(); pick.classList.add('drag'); });
-  });
-  ['dragleave', 'drop'].forEach(function (t) {
-    pick.addEventListener(t, function (e) { e.preventDefault(); pick.classList.remove('drag'); });
-  });
-  pick.addEventListener('drop', function (e) {
-    var files = Array.prototype.slice.call((e.dataTransfer && e.dataTransfer.files) || []);
-    if (files.length && !busy) addFiles(files);
-  });
-  $('#upload').addEventListener('click', upload);
+  onPick($('#catFiles'), catQ.add); onDrop(document.querySelector('[data-drop=photos]'), catQ.add);
+  onPick($('#imgFiles'), imgQ.add); onDrop(document.querySelector('[data-drop=image]'), imgQ.add);
+  onPick($('#cvFile'), function (f) { pickCv(f[0]); }); onDrop(document.querySelector('[data-drop=cv]'), function (f) { pickCv(f[0]); });
+  onPick($('#pImage'), function (f) { pickPubImage(f[0]); }); onDrop(document.querySelector('[data-drop=paper]'), function (f) { pickPubImage(f[0]); });
+  $('#catUpload').addEventListener('click', uploadCats);
+  $('#imgUpload').addEventListener('click', uploadImages);
+  $('#cvUpload').addEventListener('click', uploadCv);
+  $('#pAdd').addEventListener('click', addPublication);
   $('#manage').addEventListener('toggle', function () { if ($('#manage').open && !gallery.length) loadGallery(); });
   $('#reloadGallery').addEventListener('click', loadGallery);
   $('#saveGallery').addEventListener('click', saveGallery);
   window.addEventListener('beforeunload', function (e) { if (busy) { e.preventDefault(); e.returnValue = ''; } });
 
-  setMode('cats');
+  var lastTab = null;
+  try { lastTab = sessionStorage.getItem('upload.tab'); } catch (e) {}
+  selectTab(lastTab || 'cats');
+  refreshButtons();
   if (cfg.token) showApp(); else showSetup();
 })();
 </script>

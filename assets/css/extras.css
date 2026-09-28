@@ -101,57 +101,42 @@ section [id] { scroll-margin-top: 72px; }
 }
 @media print { .topnav { display: none; } }
 
-/* ---------- Cat album (dollydayko page): photo-app style grid ---------- */
-.cat-album { margin: 0 0 24px; }
-.cat-album-count { margin: -8px 0 4px; font-size: 15px; color: #888; }
-.cat-month { margin: 0 0 6px; }
-.cat-month-title {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 52px;               /* just below the top bar */
-  z-index: 5;
-  margin: 0;
-  padding: 12px 0 8px;
-  font-size: 18px;
-  font-weight: 600;
-  color: #043361;
-  background: rgba(255, 255, 255, 0.92);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+/* ---------- Cats page ---------- */
+/* Cover photo + caption (first paragraph of dollydayko.md) */
+.cats-page section > p:first-of-type img { display: block; width: 100%; border-radius: 8px; margin-bottom: 6px; }
+.cats-page section > p:first-of-type em { font-size: 15px; color: #777; }
+
+/* Photo wall: Pinterest-style columns, photos keep their own shape */
+.cat-wall {
+  column-count: 2;          /* fallback without JavaScript */
+  column-gap: 8px;
+  margin: 8px 0 28px;
 }
-.cat-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 3px;
-}
+.cat-wall.is-js { display: flex; align-items: flex-start; gap: 8px; column-count: auto; }
+.cat-col { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
 .cat-tile {
   display: block;
-  position: relative;
-  aspect-ratio: 1 / 1;
+  break-inside: avoid;
+  margin: 0 0 8px;
   overflow: hidden;
+  border-radius: 6px;
   background: #eceae6;
   -webkit-tap-highlight-color: transparent;
 }
+.cat-wall.is-js .cat-tile { margin: 0; }
 .cat-tile img {
   display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform .25s ease, opacity .2s ease;
+  height: auto;
+  transition: transform .3s ease, opacity .2s ease;
 }
-.cat-tile:hover img { transform: scale(1.04); }
+.cat-tile:hover img { transform: scale(1.03); }
 .cat-tile:active img { opacity: .85; }
-.cat-tile:focus-visible { outline: 2px solid #39c; outline-offset: 2px; z-index: 1; }
-
-/* Phones and tablets: edge-to-edge grid like a photos app. */
-@media screen and (max-width: 960px) {
-  .cat-album { margin-left: -15px; margin-right: -15px; }
-  .cat-album-count, .cat-month-title { padding-left: 15px; padding-right: 15px; }
-  .cat-month-title { top: 48px; }
-  .cat-grid { gap: 2px; }
-}
+.cat-tile:focus-visible { outline: 2px solid #39c; outline-offset: 2px; }
+@media screen and (min-width: 600px) { .cat-wall { column-count: 3; } }
 @media screen and (max-width: 599px) {
-  .cat-grid { grid-template-columns: repeat(3, 1fr); }
+  .cat-wall, .cat-wall.is-js, .cat-col { gap: 6px; column-gap: 6px; }
+  .cat-tile { margin-bottom: 6px; }
 }
 
 /* Viewer caption */
@@ -169,29 +154,38 @@ section [id] { scroll-margin-top: 72px; }
   pointer-events: none;
   transition: opacity .25s;
 }
-.pswp__cat-caption-date { font-size: 13px; opacity: .75; margin-top: 2px; }
 .pswp--ui-visible .pswp__cat-caption { opacity: 1; }
 .pswp:not(.pswp--ui-visible) .pswp__cat-caption { opacity: 0; }
 
-/* ---------- Visitor map ---------- */
+/* ---------- Visitor map (small, counts hidden) ---------- */
 .visitor-map {
-  max-width: 520px;
-  margin: 36px auto 0;
-  text-align: center;
+  width: 100%;
+  max-width: 260px;
+  margin: 40px auto 0;
+  border-radius: 6px;
   overflow: hidden;
-  border-radius: 8px;
+  opacity: .85;
+  transition: opacity .2s;
 }
-.visitor-map img, .visitor-map canvas, .visitor-map iframe { max-width: 100%; }
+.visitor-map:hover { opacity: 1; }
+.visitor-map a { display: block; width: 100% !important; }
+.visitor-map .mpmvs, .visitor-map #clstminf { display: none !important; }   /* no public pageview numbers */
 .visitor-map-placeholder {
-  padding: 48px 16px;
+  padding: 36px 12px;
   border: 1px dashed #cfd6de;
-  border-radius: 8px;
-  font-size: 15px;
+  border-radius: 6px;
+  font-size: 13px;
+  text-align: center;
   color: #888;
 }
 .visitor-map-placeholder code { color: inherit; font-size: 90%; }
 
-/* ---------- Dark mode (only when auto_dark_mode is on) ---------- */
+/* ---------- Homepage text tweaks ---------- */
+section h4 { margin: 0 0 6px; }
+section h4 + ul { margin-top: 0; }
+.publications { margin-top: 0; }
+
+/* ---------- Dark mode ---------- */
 @media (prefers-color-scheme: dark) {
   html[data-auto-dark] .topnav {
     background: rgba(32, 33, 43, 0.92);
@@ -202,7 +196,7 @@ section [id] { scroll-margin-top: 72px; }
   html[data-auto-dark] .topnav-links a:hover,
   html[data-auto-dark] .topnav-links a.active { color: rgb(62, 183, 240); }
   html[data-auto-dark] .topnav-links a.active::after { background: rgb(62, 183, 240); }
-  html[data-auto-dark] .cat-month-title { color: rgb(62, 183, 240); background: rgba(32, 33, 43, 0.92); }
+  html[data-auto-dark] .cats-page section > p:first-of-type em { color: #9a9ba3; }
   html[data-auto-dark] .cat-tile { background: #2a2c38; }
   html[data-auto-dark] .visitor-map-placeholder { border-color: #44465a; color: #9a9ba3; }
 }

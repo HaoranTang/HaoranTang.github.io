@@ -1,10 +1,9 @@
-# Dolly & Dayko photo gallery (shown on dollydayko.html).
-# The page sorts photos by date (newest first) and groups them by month, so the order here does not matter.
-# The upload page (/upload.html) adds entries automatically. Fields:
-#   file:    full-size photo (max 1600 px)
-#   thumb:   small square preview used in the grid
-#   date:    when the photo was taken, "YYYY-MM-DD HH:MM"
-#   caption: optional text shown in the full-screen viewer (keep it in double quotes)
+# Dolly & Dayko photo wall (dollydayko.html). The page shows these in a random mix.
+# The upload page (/upload.html) adds and removes entries for you. Fields:
+#   file:    full-size photo (max 1600 px), shown in the full-screen viewer
+#   thumb:   smaller copy (600 px wide) used in the photo wall
+#   date:    when the photo was taken (not shown; used for file names)
+#   caption: optional text shown in the viewer (keep it in double quotes)
 #   w, h:    size of the full photo in pixels
 photos:
   - file: assets/img/cats/IMG_5876.jpeg

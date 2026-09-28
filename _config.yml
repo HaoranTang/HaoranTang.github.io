@@ -1,65 +1,35 @@
-# Basic Information 
+# Site settings. See README.md for how to update everything else.
+
+# ---- Sidebar: who you are ----
 title: Haoran Tang
 position: PhD Student
 affiliation: Purdue CS
-# subaffiliation: 
 affiliation_link: https://www.cs.purdue.edu/
-# subaffiliation_link: 
 email: thr (at) purdue.edu
+avatar: ./assets/img/avatar_v2.jpg
 
-# Search Engine Optimization (SEO)
-# The following information is used to improve the website traffic from search engines, e.g., Google.
-keywords: Haoran Tang
-description: stats.
-canonical: https://haorantang.github.io/
-
-# Links 
-# If you don't need one of them, you may delete the corresponding line.
+# ---- Sidebar icons (delete a line to hide that icon) ----
 google_scholar: https://scholar.google.com/citations?user=7PC01c0AAAAJ&hl
-cv_link: assets/files/Haoran_Tang_CV.pdf
+cv_link: assets/files/Haoran_Tang_CV.pdf   # to update your CV, replace this PDF (same file name)
 github_link: https://github.com/HaoranTang
 linkedin: https://www.linkedin.com/in/hrtang/
 twitter: https://twitter.com/hrtang99
 
-# Images (e.g., your profile picture and your website's favicon) 
-# "favicon" and "favicon_dark" are used for the light and dark modes, respectively. 
-avatar: ./assets/img/avatar_v2.jpg
-favicon: 
-favicon_dark: 
+# ---- Search engines ----
+description: Haoran Tang, PhD student at Purdue CS working on machine unlearning.
+keywords: Haoran Tang, machine unlearning, Purdue
+canonical: https://haorantang.github.io/
 
-# Footnote
-# You may use the option to disable the footnote, "Powered by Jekyll and Minimal Light theme."
-enable_footnote: false
-
-# Auto Dark Mode
-# You may use the option to disable the automatic dark theme
-auto_dark_mode: true
-
-# Font
-# You can use this option to choose between Serif or Sans Serif fonts.
-font: "Serif" # or "Sans Serif"
-
-# Google Analytics 4 measurement ID (starts with "G-")
-# Only loaded on the live site (GitHub Pages), not when previewing locally.
+# ---- Visitor stats (only you can see the numbers) ----
+# Google Analytics 4 measurement ID. Loaded on the live site only.
 google_analytics: G-ZYJJ5WFBF3
-
-# Visitor map at the bottom of the homepage (https://mapmyvisitors.com, free).
-# Sign up, pick the "Map" widget, and copy the value after "d=" in the embed code.
-# Leave empty to hide the map.
+# Small visitor map at the bottom of the homepage (https://mapmyvisitors.com).
+# Only the ID after "d=" in their embed code. Leave empty to hide the map.
 mapmyvisitors_id: "KyEJ17Z9VjUWAmurCJZTzqLoKl7v32ywCdptNq49taA"
 
-# Use this project as a remote theme for GitHub Pages
-# See the guide here: https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/adding-a-theme-to-your-github-pages-site-using-jekyll
-remote_theme: yaoyao-liu/minimal-light
-
-# The following files will be removed from the generated website.
+# ---- Files that are not part of the website ----
 exclude:
+  - README.md
   - Gemfile
   - Gemfile.lock
-  - README.md
-  - README_zh_Hans.md
-  - README_zh_Hant.md
-  - README_de.md
-  - LICENSE
-  - minimal-light.gemspec
-  - html_source_file/
+  - Claude outputs

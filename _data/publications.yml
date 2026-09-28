@@ -1,3 +1,14 @@
+# Publications shown on the homepage, newest first. Copy an entry to add one
+# (or use the "Publication" tab on /upload.html). Only title, authors and conference
+# are required; delete any link line you don't have.
+#   title:            paper title
+#   authors:          wrap your name in <strong>...</strong> to bold it
+#   conference_short: badge on the image, e.g. ICLR, arXiv
+#   conference:       full venue line, e.g. International Conference on Learning Representations (ICLR), 2026.
+#   pdf / website / code / page / bibtex: links for the buttons
+#   image:            teaser image, e.g. ./assets/img/pubs/my-paper.jpg
+#   notes:            optional red highlight, e.g. Oral
+
 main:
 
   - title: "Sharpness-Aware Machine Unlearning"
@@ -8,7 +19,7 @@ main:
     website: https://www.arxiv.org/abs/2506.13715
     code: https://github.com/HaoranTang/sharp-unlearn
     bibtex: https://scholar.googleusercontent.com/scholar.bib?q=info:iVhCMDhWBlQJ:scholar.google.com/&output=citation&scisdr=CgKGCWNWEKiV0-qjXCQ:AAZF9b8AAAAAaFWlRCRllREfqmhaRgxqzAP09AE&scisig=AAZF9b8AAAAAaFWlRGCMGW5P3nniy1B86iHQAmY&scisf=4&ct=citation&cd=-1&hl=en
-    image: ./assets/img/samunlearn.png
+    image: ./assets/img/pubs/samunlearn.png
   
   - title: "Contrastive Learning Relies More on Spatial Inductive Bias Than Supervised Learning: An Empirical Study"
     authors: Yuanyi Zhong*, <strong>Haoran Tang*</strong>, Junkun Chen*, Yuxiong Wang
@@ -18,7 +29,7 @@ main:
     website: https://haorantang.github.io/cl_spatial_inductive_bias/
     code: https://github.com/HaoranTang/Contrastive-Spatial-Inductive-Bias
     bibtex: https://haorantang.github.io/cl_spatial_inductive_bias/resources/bibtex.txt
-    image: ./assets/img/iccv23_12268.png
+    image: ./assets/img/pubs/iccv23_12268.png
 
   - title: "From Logits to Latents: Contrastive Representation Shaping for LLM Unlearning"
     authors: <strong>Haoran Tang</strong>, Rajiv Khanna
@@ -28,7 +39,7 @@ main:
     website: https://arxiv.org/abs/2601.22028
     code: https://haorantang.github.io/
     bibtex: https://scholar.googleusercontent.com/scholar.bib?q=info:ZuRRl_12wcwJ:scholar.google.com/&output=citation&scisdr=Cn3DGuhmEKiV0j3LGYc:AHkA5jQAAAAAaYLNAYdIXVmUyPGDQAv0iAiKw0Q&scisig=AHkA5jQAAAAAaYLNAfJ-fEaxqnRHCNykeqqnK2U&scisf=4&ct=citation&cd=-1&hl=en
-    image: ./assets/img/clunlearn.png
+    image: ./assets/img/pubs/clunlearn.png
 
   - title: "RetriBooru: Leakage-Free Retrieval of Conditions from Reference Images for Subject-Driven Generation"
     authors: <strong>Haoran Tang</strong>, Jieren Deng, Zhihong Pan, Hao Tian, Pratik Chaudhari, Xin Zhou
@@ -38,7 +49,7 @@ main:
     website: https://haorantang.github.io/retribooru/
     code: https://github.com/HaoranTang/retribooru
     bibtex: https://haorantang.github.io/retribooru/resources/bibtex.txt
-    image: ./assets/img/retribooru.png
+    image: ./assets/img/pubs/retribooru.png
     # notes: Early Accept
   
   - title: "HashEncoding: Autoencoding with Multiscale Coordinate Hashing"
@@ -49,4 +60,4 @@ main:
     website: https://arxiv.org/abs/2211.15894
     code: https://haorantang.github.io/
     bibtex: https://scholar.googleusercontent.com/scholar.bib?q=info:TgeVpC5vz6oJ:scholar.google.com/&output=citation&scisdr=ClH3ieqTEMeJidzreyA:AFWwaeYAAAAAZXTtYyC9isz4ZfxVpHAhYJr3nd0&scisig=AFWwaeYAAAAAZXTtY8Wj8B4Q6SI-Q3QB_isPF5I&scisf=4&ct=citation&cd=-1&hl=en
-    image: ./assets/img/hashencoding.png
+    image: ./assets/img/pubs/hashencoding.png
