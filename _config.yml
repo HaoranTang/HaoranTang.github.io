@@ -46,7 +46,7 @@ google_analytics: G-ZYJJ5WFBF3
 # Visitor map at the bottom of the homepage (https://mapmyvisitors.com, free).
 # Sign up, pick the "Map" widget, and copy the value after "d=" in the embed code.
 # Leave empty to hide the map.
-mapmyvisitors_id: "KyEJ17Z9VjUWAmurCJZTzqLoKl7v32ywCdptNq49taA&cl=ffffff"
+mapmyvisitors_id: "KyEJ17Z9VjUWAmurCJZTzqLoKl7v32ywCdptNq49taA"
 
 # Use this project as a remote theme for GitHub Pages
 # See the guide here: https://docs.github.com/en/pages/setting-up-a-github-pages-site-with-jekyll/adding-a-theme-to-your-github-pages-site-using-jekyll

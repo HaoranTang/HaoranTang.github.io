@@ -1,6 +1,6 @@
 ---
 layout: homepage
-title: Dolly and Dayko
+tab_title: Dolly and Dayko
 ---
 
 ![](assets/img/cats/IMG_5606.JPG)

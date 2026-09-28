@@ -1,58 +1,94 @@
-# Dolly & Dayko photo gallery (shown on dollydayko.html), newest first.
-# The phone upload page (/upload.html) adds new photos to the top of this list.
-# You can also edit it by hand. Fields:
-#   file:    path to the image inside the repo
-#   caption: optional text shown under the photo (keep it in double quotes)
-#   w, h:    image size in pixels, used to balance the two columns
+# Dolly & Dayko photo gallery (shown on dollydayko.html).
+# The page sorts photos by date (newest first) and groups them by month, so the order here does not matter.
+# The upload page (/upload.html) adds entries automatically. Fields:
+#   file:    full-size photo (max 1600 px)
+#   thumb:   small square preview used in the grid
+#   date:    when the photo was taken, "YYYY-MM-DD HH:MM"
+#   caption: optional text shown in the full-screen viewer (keep it in double quotes)
+#   w, h:    size of the full photo in pixels
 photos:
-  - file: assets/img/cats/IMG_9385.jpeg
-    w: 1558
-    h: 1600
-  - file: assets/img/cats/IMG_9427.jpeg
-    w: 1600
-    h: 1600
-  - file: assets/img/cats/IMG_5506.jpg
-    w: 1080
-    h: 1551
-  - file: assets/img/cats/IMG_5670.jpg
-    w: 1080
-    h: 1412
-  - file: assets/img/cats/IMG_5370.jpeg
-    w: 1600
-    h: 1200
-  - file: assets/img/cats/IMG_5230.jpeg
-    w: 1600
-    h: 763
   - file: assets/img/cats/IMG_5876.jpeg
+    thumb: assets/img/cats/thumbs/IMG_5876.jpg
+    date: "2023-09-12 13:57"
     w: 1395
     h: 1600
+  - file: assets/img/cats/IMG_9427.jpeg
+    thumb: assets/img/cats/thumbs/IMG_9427.jpg
+    date: "2023-09-08 12:03"
+    w: 1600
+    h: 1600
+  - file: assets/img/cats/IMG_9385.jpeg
+    thumb: assets/img/cats/thumbs/IMG_9385.jpg
+    date: "2023-09-06 23:37"
+    w: 1558
+    h: 1600
+  - file: assets/img/cats/IMG_5670.jpg
+    thumb: assets/img/cats/thumbs/IMG_5670.jpg
+    date: "2023-08-22 12:00"
+    w: 1080
+    h: 1412
+  - file: assets/img/cats/IMG_5506.jpg
+    thumb: assets/img/cats/thumbs/IMG_5506.jpg
+    date: "2023-08-06 12:00"
+    w: 1080
+    h: 1551
   - file: assets/img/cats/IMG_5403.JPG
+    thumb: assets/img/cats/thumbs/IMG_5403.jpg
+    date: "2023-07-27 12:00"
     w: 900
     h: 1600
-  - file: assets/img/cats/IMG_5237.JPG
-    w: 900
-    h: 1600
-  - file: assets/img/cats/IMG_5223.jpeg
+  - file: assets/img/cats/IMG_5370.jpeg
+    thumb: assets/img/cats/thumbs/IMG_5370.jpg
+    date: "2023-07-23 21:03"
     w: 1600
     h: 1200
+  - file: assets/img/cats/IMG_5237.JPG
+    thumb: assets/img/cats/thumbs/IMG_5237.jpg
+    date: "2023-07-10 12:00"
+    w: 900
+    h: 1600
+  - file: assets/img/cats/IMG_5230.jpeg
+    thumb: assets/img/cats/thumbs/IMG_5230.jpg
+    date: "2023-07-09 11:05"
+    w: 1600
+    h: 763
+  - file: assets/img/cats/IMG_5226.jpeg
+    thumb: assets/img/cats/thumbs/IMG_5226.jpg
+    date: "2023-07-09 11:03"
+    w: 1600
+    h: 1200
+  - file: assets/img/cats/IMG_5223.jpeg
+    thumb: assets/img/cats/thumbs/IMG_5223.jpg
+    date: "2023-07-09 11:00"
+    w: 1600
+    h: 1200
+  - file: assets/img/cats/IMG_4969.jpeg
+    thumb: assets/img/cats/thumbs/IMG_4969.jpg
+    date: "2023-06-17 18:25"
+    w: 1600
+    h: 1600
+  - file: assets/img/cats/IMG_4964.jpeg
+    thumb: assets/img/cats/thumbs/IMG_4964.jpg
+    date: "2023-06-17 18:25"
+    w: 1600
+    h: 1600
   - file: assets/img/cats/IMG_4915.jpg
+    thumb: assets/img/cats/thumbs/IMG_4915.jpg
+    date: "2023-06-13 12:00"
     w: 1080
     h: 1338
-  - file: assets/img/cats/IMG_5226.jpeg
-    w: 1600
-    h: 1200
-  - file: assets/img/cats/IMG_4964.jpeg
-    w: 1600
-    h: 1600
-  - file: assets/img/cats/IMG_4969.jpeg
-    w: 1600
-    h: 1600
   - file: assets/img/cats/IMG_4884.jpg
+    thumb: assets/img/cats/thumbs/IMG_4884.jpg
+    date: "2023-06-11 12:00"
     w: 1080
     h: 1383
   - file: assets/img/cats/IMG_4878.JPG
+    thumb: assets/img/cats/thumbs/IMG_4878.jpg
+    date: "2023-06-10 12:00"
     w: 900
     h: 1600
   - file: assets/img/cats/IMG_4871.jpg
+    thumb: assets/img/cats/thumbs/IMG_4871.jpg
+    date: "2023-06-10 12:00"
     w: 1600
     h: 987

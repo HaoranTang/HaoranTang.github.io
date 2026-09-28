@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ site.lang | default: "en-US" }}"{% if site.auto_dark_mode %} data-auto-dark{% endif %}>
   <head>
-    <title>{% if page.title %}{{ page.title }} | {{ site.title }}{% else %}{{ site.title }} | {{ site.affiliation }}{% endif %}</title>
+    <title>{% if page.tab_title %}{{ page.tab_title }} | {{ site.title }}{% else %}{{ site.title }} | {{ site.affiliation }}{% endif %}</title>
 
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -136,8 +136,9 @@
 
       {% if page.visitor_map %}
       <div class="visitor-map" id="visitors">
-        {% if site.mapmyvisitors_id and site.mapmyvisitors_id != "" %}
-        <script type="text/javascript" id="mapmyvisitors" src="https://mapmyvisitors.com/map.js?d={{ site.mapmyvisitors_id }}&cl=ffffff&w=a&co=e6eaef&cmo=3399cc&cmn=e74c3c&ct=043361"></script>
+        {% assign mmv_id = site.mapmyvisitors_id | split: "&" | first %}
+        {% if mmv_id and mmv_id != "" %}
+        <script type="text/javascript" id="mapmyvisitors" src="https://mapmyvisitors.com/map.js?d={{ mmv_id }}&cl=ffffff&w=a&co=e6eaef&cmo=3399cc&cmn=e74c3c&ct=043361"></script>
         {% elsif jekyll.environment != "production" %}
         <div class="visitor-map-placeholder">Visitor map appears here once <code>mapmyvisitors_id</code> is set in <code>_config.yml</code>.</div>
         {% endif %}

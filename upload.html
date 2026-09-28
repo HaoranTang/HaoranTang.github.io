@@ -77,6 +77,9 @@
   .item .meta.err { color: var(--err); }
   .item input[type=text] { min-height: 40px; padding: 8px 10px; font-size: 15px; }
   .item .row { display: flex; gap: 10px; align-items: center; margin-top: 6px; font-size: 14px; }
+  .item input[type=date] { font: inherit; font-size: 14px; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; min-height: 36px; margin-top: 6px; }
+  .item .datehint { font-size: 12px; color: var(--muted); }
+  .pick.drag { border-color: var(--link); background: var(--chip); }
   .item.removed { opacity: .45; }
   .item.removed .thumb { filter: grayscale(1); }
   .actions { margin-top: 16px; display: flex; gap: 10px; }
@@ -137,7 +140,8 @@
       <label class="pick">
         <input type="file" id="files" accept="image/*" multiple>
         <strong>Choose photos</strong>
-        <span>Resized to 1600 px · location and camera info removed</span>
+        <span class="small">or drop them here</span>
+        <span>Resized to 1600 px · location and camera info removed · sorted by the date taken</span>
       </label>
       <ul class="items" id="queue"></ul>
       <div class="actions"><button class="btn wide" id="upload" disabled>Upload</button></div>
@@ -167,9 +171,11 @@
   var CATS_YML = '_data/cats.yml';
   var CATS_DIR = 'assets/img/cats';
   var OTHER_DIR = 'assets/img/uploads';
+  var THUMB_DIR = CATS_DIR + '/thumbs';
   var MAX_SIDE = 1600;
+  var THUMB_SIDE = 400;
   var QUALITY = 0.85;
-  var DEFAULT_HEAD = '# Dolly & Dayko photo gallery (shown on dollydayko.html), newest first.';
+  var DEFAULT_HEAD = '# Dolly & Dayko photo gallery (shown on dollydayko.html). Sorted by date on the page.';
 
   var $ = function (s) { return document.querySelector(s); };
   var store = {
@@ -304,7 +310,7 @@
     return v.replace(/\s+#.*$/, '');
   }
   function setKey(o, k, v) {
-    if (k === 'file' || k === 'caption') o[k] = scalar(v);
+    if (k === 'file' || k === 'caption' || k === 'thumb' || k === 'date') o[k] = String(scalar(v));
     else if (k === 'w' || k === 'h') o[k] = parseInt(scalar(v), 10) || undefined;
     else o.extra.push([k, v.trim()]);
   }
@@ -330,12 +336,70 @@
     var out = (doc.head ? doc.head + '\n' : '') + 'photos:\n';
     doc.photos.forEach(function (p) {
       out += '  - file: ' + yamlStr(p.file) + '\n';
+      if (p.thumb) out += '    thumb: ' + yamlStr(p.thumb) + '\n';
+      if (p.date) out += '    date: ' + JSON.stringify(p.date) + '\n';
       if (p.caption) out += '    caption: ' + JSON.stringify(p.caption) + '\n';
       if (p.w) out += '    w: ' + p.w + '\n';
       if (p.h) out += '    h: ' + p.h + '\n';
       (p.extra || []).forEach(function (kv) { out += '    ' + kv[0] + ': ' + kv[1] + '\n'; });
     });
     return out;
+  }
+
+  // Newest first by date taken; photos without a date go last, otherwise keep their order.
+  function sortPhotos(list) {
+    return list.map(function (p, i) { return [p, i]; }).sort(function (a, b) {
+      var da = a[0].date || '', db = b[0].date || '';
+      if (da !== db) { if (!da) return 1; if (!db) return -1; return da < db ? 1 : -1; }
+      return a[1] - b[1];
+    }).map(function (x) { return x[0]; });
+  }
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  function prettyDate(d) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(d || '');
+    return m ? MONTHS[+m[2] - 1] + ' ' + (+m[3]) + ', ' + m[1] : '';
+  }
+  function localStamp(t) {
+    var d = new Date(t);
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  // ---------- When was the photo taken? (read EXIF before it is thrown away) ----------
+  function readTakenDate(file) {
+    return file.slice(0, 256 * 1024).arrayBuffer().then(function (buf) {
+      var v = new DataView(buf);
+      if (v.byteLength < 4 || v.getUint16(0) !== 0xFFD8) return null;
+      var off = 2;
+      while (off + 4 <= v.byteLength) {
+        var marker = v.getUint16(off);
+        if ((marker & 0xFF00) !== 0xFF00 || marker === 0xFFDA) return null;
+        var len = v.getUint16(off + 2);
+        if (marker === 0xFFE1 && v.getUint32(off + 4) === 0x45786966) return exifDate(v, off + 10);
+        off += 2 + len;
+      }
+      return null;
+    }).catch(function () { return null; });
+  }
+  function exifDate(v, t) {
+    var le = v.getUint16(t) === 0x4949;
+    function u16(o) { return v.getUint16(t + o, le); }
+    function u32(o) { return v.getUint32(t + o, le); }
+    function ifd(o) {
+      var tags = {}, n = u16(o);
+      for (var i = 0; i < n; i++) { var e = o + 2 + i * 12; tags[u16(e)] = { type: u16(e + 2), count: u32(e + 4), at: e + 8 }; }
+      return tags;
+    }
+    function str(tag) {
+      if (!tag || tag.type !== 2) return null;
+      var o = tag.count > 4 ? u32(tag.at) : tag.at, s = '';
+      for (var i = 0; i < tag.count - 1; i++) s += String.fromCharCode(v.getUint8(t + o + i));
+      return s;
+    }
+    var ifd0 = ifd(u32(4)), d = null;
+    if (ifd0[0x8769]) { var ex = ifd(u32(ifd0[0x8769].at)); d = str(ex[0x9003]) || str(ex[0x9004]); }
+    d = d || str(ifd0[0x0132]);
+    var m = d && /^(\d{4}):(\d{2}):(\d{2})[ T](\d{2}):(\d{2})/.exec(d);
+    return m && m[1] !== '0000' ? m[1] + '-' + m[2] + '-' + m[3] + ' ' + m[4] + ':' + m[5] : null;
   }
 
   // ---------- Image processing (in the browser) ----------
@@ -363,8 +427,23 @@
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
       ctx.drawImage(img, 0, 0, w, h);
-      return new Promise(function (resolve, reject) {
-        c.toBlob(function (b) { b ? resolve({ blob: b, w: w, h: h }) : reject(new Error('Could not convert the image.')); }, 'image/jpeg', QUALITY);
+      // Square thumbnail from the centre, like a phone's photo grid.
+      var side = Math.min(sw, sh), ts = Math.min(THUMB_SIDE, side);
+      var tc = document.createElement('canvas');
+      tc.width = ts; tc.height = ts;
+      var tctx = tc.getContext('2d');
+      tctx.fillStyle = '#fff';
+      tctx.fillRect(0, 0, ts, ts);
+      tctx.imageSmoothingEnabled = true;
+      tctx.imageSmoothingQuality = 'high';
+      tctx.drawImage(img, (sw - side) / 2, (sh - side) / 2, side, side, 0, 0, ts, ts);
+      function encode(canvas, q) {
+        return new Promise(function (resolve, reject) {
+          canvas.toBlob(function (b) { b ? resolve(b) : reject(new Error('Could not convert the image.')); }, 'image/jpeg', q);
+        });
+      }
+      return Promise.all([encode(c, QUALITY), encode(tc, 0.8)]).then(function (r) {
+        return { blob: r[0], thumb: r[1], w: w, h: h };
       });
     }).finally(function () { URL.revokeObjectURL(src); });
   }
@@ -383,6 +462,11 @@
       it.meta = el('p', { class: 'meta', text: 'Preparing…' });
       it.caption = el('input', { type: 'text', placeholder: 'Caption (optional)', 'aria-label': 'Caption' });
       it.caption.addEventListener('input', function () { it.text = it.caption.value; });
+      it.dateInput = el('input', { type: 'date', 'aria-label': 'Date taken' });
+      it.dateInput.addEventListener('change', function () {
+        if (/^\d{4}-\d{2}-\d{2}$/.test(it.dateInput.value)) { it.date = it.dateInput.value + ' 12:00'; it.dateGuessed = false; renderItem(it); }
+      });
+      it.dateHint = el('span', { class: 'datehint' });
       var rm = el('button', { type: 'button', class: 'linkbtn', text: 'Remove' });
       rm.addEventListener('click', function () {
         if (busy) return;
@@ -391,10 +475,16 @@
         it.node.remove();
         refreshUploadButton();
       });
-      it.node = el('li', { class: 'item' }, [it.thumb, el('div', null, [it.meta, it.caption, el('div', { class: 'row' }, [rm])])]);
+      it.dateRow = el('div', { class: 'row' }, [it.dateInput, it.dateHint]);
+      it.node = el('li', { class: 'item' }, [it.thumb, el('div', null, [it.meta, it.caption, it.dateRow, el('div', { class: 'row' }, [rm])])]);
       $('#queue').appendChild(it.node);
     }
     it.caption.hidden = mode !== 'cats' || it.state === 'error';
+    it.dateRow.hidden = mode !== 'cats' || it.state !== 'ready';
+    if (it.date) {
+      it.dateInput.value = it.date.slice(0, 10);
+      it.dateHint.textContent = it.dateGuessed ? 'No date in this photo; change it if needed' : 'Date taken';
+    }
     if (it.state === 'ready') {
       it.thumb.src = it.preview;
       it.meta.textContent = it.w + '×' + it.h + ' · ' + kb(it.blob.size) + ' · location removed';
@@ -415,8 +505,11 @@
     for (var i = 0; i < items.length; i++) {
       var it = items[i];
       try {
+        var taken = await readTakenDate(it.file);
+        it.date = taken || localStamp(it.file.lastModified || Date.now());
+        it.dateGuessed = !taken;
         var r = await processImage(it.file);
-        it.blob = r.blob; it.w = r.w; it.h = r.h; it.preview = URL.createObjectURL(r.blob); it.state = 'ready';
+        it.blob = r.blob; it.thumbBlob = r.thumb; it.w = r.w; it.h = r.h; it.preview = URL.createObjectURL(r.thumb); it.state = 'ready';
       } catch (e) {
         it.state = 'error'; it.error = e.message;
       }
@@ -436,21 +529,31 @@
     try {
       for (var i = 0; i < items.length; i++) {
         var it = items[i];
-        it.path = dir + '/' + (mode === 'cats' ? when + '-' + (i + 1) + '-' + rand() : slug(it.name) + '-' + when) + '.jpg';
+        var base = mode === 'cats' ? it.date.replace(/[: ]/g, '-').replace(/-(\d\d)-(\d\d)$/, '-$1$2') + '-' + rand() : slug(it.name) + '-' + when;
+        it.path = dir + '/' + base + '.jpg';
         setLog(log, 'Sending photo ' + (i + 1) + ' of ' + items.length + '…');
         var b = await gh(repoPath('/git/blobs'), { method: 'POST', body: { content: await blobToB64(it.blob), encoding: 'base64' } });
         it.sha = b.sha;
+        if (mode === 'cats') {
+          it.thumbPath = THUMB_DIR + '/' + base + '.jpg';
+          var tb = await gh(repoPath('/git/blobs'), { method: 'POST', body: { content: await blobToB64(it.thumbBlob), encoding: 'base64' } });
+          it.thumbSha = tb.sha;
+        }
       }
       setLog(log, 'Saving to the website…');
       var n = items.length, plural = n > 1 ? 's' : '';
       var message = mode === 'cats' ? 'Add ' + n + ' cat photo' + plural + ' (from upload page)' : 'Upload ' + n + ' image' + plural + ' (from upload page)';
       var uploadMode = mode;
       await commit(message, function (yml) {
-        var changes = items.map(function (it) { return { path: it.path, sha: it.sha }; });
+        var changes = [];
+        items.forEach(function (it) {
+          changes.push({ path: it.path, sha: it.sha });
+          if (it.thumbPath) changes.push({ path: it.thumbPath, sha: it.thumbSha });
+        });
         if (uploadMode === 'cats') {
           var doc = parseCats(yml);
-          var added = items.map(function (it) { return { file: it.path, caption: (it.text || '').trim(), w: it.w, h: it.h, extra: [] }; });
-          doc.photos = added.concat(doc.photos);
+          var added = items.map(function (it) { return { file: it.path, thumb: it.thumbPath, date: it.date, caption: (it.text || '').trim(), w: it.w, h: it.h, extra: [] }; });
+          doc.photos = sortPhotos(added.concat(doc.photos));
           changes.push({ path: CATS_YML, content: serializeCats(doc) });
         }
         return changes;
@@ -458,7 +561,7 @@
       var res = $('#result');
       res.textContent = '';
       if (uploadMode === 'cats') {
-        setLog(log, 'Done! ' + n + ' photo' + plural + ' added. The cats page updates in about a minute.', 'ok');
+        setLog(log, 'Done! ' + n + ' photo' + plural + ' added and sorted by date. The cats page updates in about a minute.', 'ok');
         res.appendChild(el('a', { href: './dollydayko.html', text: 'Open the cats page →' }));
       } else {
         setLog(log, 'Done! Use these paths in your pages (live in about a minute):', 'ok');
@@ -498,12 +601,13 @@
       var doc = parseCats(await readText(CATS_YML, head.commit));
       if (!doc.photos.length) { setLog(log, 'The gallery is empty.'); return; }
       setLog(log, doc.photos.length + ' photos, newest first. Removing a photo also deletes its file.');
-      doc.photos.forEach(function (p) {
+      sortPhotos(doc.photos).forEach(function (p) {
         var g = { photo: p, removed: false };
-        var img = el('img', { class: 'thumb', alt: '', loading: 'lazy', src: './' + p.file });
+        var shown = p.thumb || p.file;
+        var img = el('img', { class: 'thumb', alt: '', loading: 'lazy', src: './' + shown });
         img.addEventListener('error', function once() {
           img.removeEventListener('error', once);
-          img.src = 'https://raw.githubusercontent.com/' + cfg.repo + '/' + head.commit + '/' + p.file;
+          img.src = 'https://raw.githubusercontent.com/' + cfg.repo + '/' + head.commit + '/' + shown;
         });
         g.input = el('input', { type: 'text', placeholder: 'Caption (optional)', 'aria-label': 'Caption' });
         g.input.value = p.caption || '';
@@ -515,7 +619,7 @@
           li.classList.toggle('removed', g.removed);
           refreshSave();
         });
-        var li = el('li', { class: 'item' }, [img, el('div', null, [el('p', { class: 'meta', text: p.file.split('/').pop() }), g.input, el('div', { class: 'row' }, [rm])])]);
+        var li = el('li', { class: 'item' }, [img, el('div', null, [el('p', { class: 'meta', text: (p.date ? prettyDate(p.date) + ' · ' : '') + p.file.split('/').pop() }), g.input, el('div', { class: 'row' }, [rm])])]);
         $('#gallery').appendChild(li);
         gallery.push(g);
       });
@@ -542,8 +646,10 @@
         doc.photos = doc.photos.filter(function (p) {
           if (!removed[p.file]) return true;
           if (p.file.indexOf(CATS_DIR + '/') === 0) changes.push({ path: p.file, remove: true });
+          if (p.thumb && p.thumb.indexOf(THUMB_DIR + '/') === 0) changes.push({ path: p.thumb, remove: true });
           return false;
         });
+        doc.photos = sortPhotos(doc.photos);
         doc.photos.forEach(function (p) { if (p.file in captions) p.caption = captions[p.file]; });
         changes.push({ path: CATS_YML, content: serializeCats(doc) });
         return changes;
@@ -596,7 +702,7 @@
     mode = m;
     document.querySelectorAll('.seg button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === m)); });
     $('#modeHelp').textContent = m === 'cats'
-      ? 'Photos go to the top of the gallery on the cats page.'
+      ? 'Photos are added to the cats album and filed under the month they were taken.'
       : 'Photos go to ' + OTHER_DIR + '/ and you get a path to use in any page.';
     queue.forEach(renderItem);
   }
@@ -615,6 +721,17 @@
     var files = Array.prototype.slice.call(e.target.files || []);
     e.target.value = '';
     if (files.length) addFiles(files);
+  });
+  var pick = document.querySelector('.pick');
+  ['dragenter', 'dragover'].forEach(function (t) {
+    pick.addEventListener(t, function (e) { e.preventDefault(); pick.classList.add('drag'); });
+  });
+  ['dragleave', 'drop'].forEach(function (t) {
+    pick.addEventListener(t, function (e) { e.preventDefault(); pick.classList.remove('drag'); });
+  });
+  pick.addEventListener('drop', function (e) {
+    var files = Array.prototype.slice.call((e.dataTransfer && e.dataTransfer.files) || []);
+    if (files.length && !busy) addFiles(files);
   });
   $('#upload').addEventListener('click', upload);
   $('#manage').addEventListener('toggle', function () { if ($('#manage').open && !gallery.length) loadGallery(); });

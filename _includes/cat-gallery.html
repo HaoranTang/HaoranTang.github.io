@@ -1,23 +1,24 @@
 {%- comment -%}
-  Two-column photo gallery built from _data/cats.yml.
-  Each photo goes into whichever column is currently shorter, so the columns stay balanced.
+  Photo-app style album built from _data/cats.yml:
+  newest first, grouped by month, square thumbnails, tap to open the full-screen viewer.
+  Photos without a date go to the end under "Undated".
 {%- endcomment -%}
-{%- assign left_h = 0.0 -%}
-{%- assign right_h = 0.0 -%}
-{%- assign left = "" -%}
-{%- assign right = "" -%}
-{%- for p in site.data.cats.photos -%}
-  {%- assign ratio = 1.0 -%}
-  {%- if p.w and p.h -%}{%- assign ratio = p.h | times: 1.0 | divided_by: p.w -%}{%- endif -%}
-  {%- assign has_caption = false -%}
-  {%- if p.caption and p.caption != "" -%}{%- assign has_caption = true -%}{%- assign ratio = ratio | plus: 0.12 -%}{%- endif -%}
-  {%- capture fig -%}<figure class="cat-photo"><a href="{{ p.file | relative_url }}"><img src="{{ p.file | relative_url }}" alt="{% if has_caption %}{{ p.caption | escape }}{% else %}Dolly and Dayko{% endif %}" loading="lazy"{% if p.w and p.h %} width="{{ p.w }}" height="{{ p.h }}"{% endif %}></a>{% if has_caption %}<figcaption>{{ p.caption | escape }}</figcaption>{% endif %}</figure>{%- endcapture -%}
-  {%- if left_h <= right_h -%}
-    {%- assign left = left | append: fig -%}
-    {%- assign left_h = left_h | plus: ratio -%}
-  {%- else -%}
-    {%- assign right = right | append: fig -%}
-    {%- assign right_h = right_h | plus: ratio -%}
+{%- assign photos = site.data.cats.photos | sort: "date" | reverse -%}
+<div class="cat-album" id="cat-album">
+<p class="cat-album-count">{{ photos | size }} photos · tap one to browse</p>
+{%- assign current = "__none__" -%}
+{%- for p in photos -%}
+  {%- if p.date -%}{%- assign month = p.date | slice: 0, 7 -%}{%- else -%}{%- assign month = "undated" -%}{%- endif -%}
+  {%- if month != current -%}
+    {%- unless forloop.first -%}</div></div>{%- endunless -%}
+    <div class="cat-month"><h4 class="cat-month-title">{% if month == "undated" %}Undated{% else %}{{ p.date | date: "%B %Y" }}{% endif %}</h4><div class="cat-grid">
+    {%- assign current = month -%}
   {%- endif -%}
+  {%- assign has_caption = false -%}
+  {%- if p.caption and p.caption != "" -%}{%- assign has_caption = true -%}{%- endif -%}
+  <a class="cat-tile" href="{{ p.file | relative_url }}" data-pswp-width="{{ p.w | default: 1600 }}" data-pswp-height="{{ p.h | default: 1200 }}" data-cropped="true"{% if has_caption %} data-caption="{{ p.caption | escape }}"{% endif %}{% if p.date %} data-date="{{ p.date | date: '%b %-d, %Y' }}"{% endif %}><img src="{{ p.thumb | default: p.file | relative_url }}" alt="{% if has_caption %}{{ p.caption | escape }}{% else %}Dolly and Dayko{% endif %}" loading="lazy" decoding="async"></a>
 {%- endfor -%}
-<div class="cat-gallery"><div class="cat-col">{{ left }}</div><div class="cat-col">{{ right }}</div></div>
+{%- if photos.size > 0 -%}</div></div>{%- endif -%}
+</div>
+<link rel="stylesheet" href="{{ '/assets/vendor/photoswipe/photoswipe.css' | relative_url }}">
+<script type="module" src="{{ '/assets/js/cat-gallery.js' | relative_url }}"></script>
