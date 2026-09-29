@@ -11,13 +11,13 @@
 
 main:
 
-  - title: "From Logits to Latents: Contrastive Representation Shaping for LLM Unlearning"
+  - title: "Contrastive Representation Shaping for LLM Unlearning"
     authors: <strong>Haoran Tang</strong>, Rajiv Khanna
     conference_short: NeurIPS
     conference: Neural Information Processing Systems (NeurIPS), 2026.
     pdf: https://arxiv.org/abs/2601.22028
     website: https://arxiv.org/abs/2601.22028
-    code: https://haorantang.github.io/
+    code: https://github.com/HaoranTang/CLReg
     bibtex: https://scholar.googleusercontent.com/scholar.bib?q=info:ZuRRl_12wcwJ:scholar.google.com/&output=citation&scisdr=Cn3DGuhmEKiV0j3LGYc:AHkA5jQAAAAAaYLNAYdIXVmUyPGDQAv0iAiKw0Q&scisig=AHkA5jQAAAAAaYLNAfJ-fEaxqnRHCNykeqqnK2U&scisf=4&ct=citation&cd=-1&hl=en
     image: ./assets/img/pubs/clunlearn.png
     
@@ -28,7 +28,7 @@ main:
     pdf: https://www.arxiv.org/abs/2506.13715
     website: https://www.arxiv.org/abs/2506.13715
     code: https://github.com/HaoranTang/sharp-unlearn
-    bibtex: https://scholar.googleusercontent.com/scholar.bib?q=info:iVhCMDhWBlQJ:scholar.google.com/&output=citation&scisdr=CgKGCWNWEKiV0-qjXCQ:AAZF9b8AAAAAaFWlRCRllREfqmhaRgxqzAP09AE&scisig=AAZF9b8AAAAAaFWlRGCMGW5P3nniy1B86iHQAmY&scisf=4&ct=citation&cd=-1&hl=en
+    bibtex: https://proceedings.iclr.cc/paper_files/paper/2026/hash/815d50638e46b7f3bdaaae2158c68d54-Abstract-Conference.html
     image: ./assets/img/pubs/samunlearn.png
   
   - title: "Contrastive Learning Relies More on Spatial Inductive Bias Than Supervised Learning: An Empirical Study"
@@ -38,7 +38,7 @@ main:
     pdf: https://openaccess.thecvf.com/content/ICCV2023/html/Zhong_Contrastive_Learning_Relies_More_on_Spatial_Inductive_Bias_Than_Supervised_ICCV_2023_paper.html
     website: https://haorantang.github.io/cl_spatial_inductive_bias/
     code: https://github.com/HaoranTang/Contrastive-Spatial-Inductive-Bias
-    bibtex: https://haorantang.github.io/cl_spatial_inductive_bias/resources/bibtex.txt
+    bibtex: https://ieeexplore.ieee.org/abstract/document/10378469
     image: ./assets/img/pubs/iccv23_12268.png
 
   - title: "RetriBooru: Leakage-Free Retrieval of Conditions from Reference Images for Subject-Driven Generation"
@@ -48,7 +48,7 @@ main:
     pdf: https://arxiv.org/abs/2312.02521
     website: https://haorantang.github.io/retribooru/
     code: https://github.com/HaoranTang/retribooru
-    bibtex: https://haorantang.github.io/retribooru/resources/bibtex.txt
+    bibtex: https://scholar.google.com/scholar_lookup?arxiv_id=2312.02521
     image: ./assets/img/pubs/retribooru.png
     # notes: Early Accept
   
@@ -59,5 +59,5 @@ main:
     pdf: https://arxiv.org/abs/2211.15894
     website: https://arxiv.org/abs/2211.15894
     code: https://haorantang.github.io/
-    bibtex: https://scholar.googleusercontent.com/scholar.bib?q=info:TgeVpC5vz6oJ:scholar.google.com/&output=citation&scisdr=ClH3ieqTEMeJidzreyA:AFWwaeYAAAAAZXTtYyC9isz4ZfxVpHAhYJr3nd0&scisig=AFWwaeYAAAAAZXTtY8Wj8B4Q6SI-Q3QB_isPF5I&scisf=4&ct=citation&cd=-1&hl=en
+    bibtex: https://scholar.google.com/scholar_lookup?arxiv_id=2211.15894
     image: ./assets/img/pubs/hashencoding.png
