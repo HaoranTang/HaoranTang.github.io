@@ -18,7 +18,7 @@ main:
     pdf: https://arxiv.org/abs/2601.22028
     website: https://arxiv.org/abs/2601.22028
     code: https://github.com/HaoranTang/CLReg
-    bibtex: https://scholar.googleusercontent.com/scholar.bib?q=info:ZuRRl_12wcwJ:scholar.google.com/&output=citation&scisdr=Cn3DGuhmEKiV0j3LGYc:AHkA5jQAAAAAaYLNAYdIXVmUyPGDQAv0iAiKw0Q&scisig=AHkA5jQAAAAAaYLNAfJ-fEaxqnRHCNykeqqnK2U&scisf=4&ct=citation&cd=-1&hl=en
+    bibtex: https://scholar.google.com/scholar_lookup?arxiv_id=2601.22028
     image: ./assets/img/pubs/clunlearn.png
     
   - title: "Sharpness-Aware Machine Unlearning"
@@ -40,6 +40,26 @@ main:
     code: https://github.com/HaoranTang/Contrastive-Spatial-Inductive-Bias
     bibtex: https://ieeexplore.ieee.org/abstract/document/10378469
     image: ./assets/img/pubs/iccv23_12268.png
+
+  - title: "Unmerge: Efficient Machine Unlearning via Task Arithmetic"
+    authors: <strong>Haoran Tang</strong>, Andrew Tan, Rajiv Khanna
+    conference_short: arXiv
+    conference: arXiv, 2026.
+    pdf: https://arxiv.org/abs/2609.38895
+    website: https://arxiv.org/abs/2609.38895
+    code: https://haorantang.github.io/
+    bibtex: https://arxiv.org/abs/2609.38895
+    image: ./assets/img/pubs/unmerge.png
+
+  - title: "Unlearning Deceptive Behaviors in LLMs with Contrastive Forget Sets"
+    authors: <strong>Haoran Tang</strong>, Rajiv Khanna
+    conference_short: arXiv
+    conference: arXiv, 2026.
+    pdf: https://arxiv.org/abs/2609.38909
+    website: https://arxiv.org/abs/2609.38909
+    code: https://haorantang.github.io/
+    bibtex: https://arxiv.org/abs/2609.38909
+    image: ./assets/img/pubs/llmdeception.png
 
   - title: "RetriBooru: Leakage-Free Retrieval of Conditions from Reference Images for Subject-Driven Generation"
     authors: <strong>Haoran Tang</strong>, Jieren Deng, Zhihong Pan, Hao Tian, Pratik Chaudhari, Xin Zhou
