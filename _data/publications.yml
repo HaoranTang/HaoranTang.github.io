@@ -25,7 +25,7 @@ main:
     authors: <strong>Haoran Tang</strong>, Rajiv Khanna
     conference_short: ICLR
     conference: International Conference on Learning Representations (ICLR), 2026.
-    pdf: https://www.arxiv.org/abs/2506.13715
+    pdf: https://proceedings.iclr.cc/paper_files/paper/2026/hash/815d50638e46b7f3bdaaae2158c68d54-Abstract-Conference.html
     website: https://www.arxiv.org/abs/2506.13715
     code: https://github.com/HaoranTang/sharp-unlearn
     bibtex: https://proceedings.iclr.cc/paper_files/paper/2026/hash/815d50638e46b7f3bdaaae2158c68d54-Abstract-Conference.html
