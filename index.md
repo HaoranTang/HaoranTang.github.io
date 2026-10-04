@@ -11,13 +11,13 @@ visitor_map: true
 
 ## Welcome
 
-Haoran Tang is a second-year PhD student at Purdue CS, advised by Prof. [Rajiv Khanna](https://rjvak7.github.io/). He received his MSE in Robotics from University of Pennsylvania and BS in Computer Engineering from University of Illinois Urbana-Champaign. Haoran was born and raised in Chongqing, China, a metropolis built on mountains and rivers.
+Haoran Tang is a third-year PhD student at Purdue CS, advised by Prof. [Rajiv Khanna](https://rjvak7.github.io/). He received his MS in Robotics from University of Pennsylvania and BS in Computer Engineering from University of Illinois Urbana-Champaign. Haoran was born and raised in Chongqing, China, a metropolis built on mountains and rivers.
 
 ## Research Interests
 
-Haoran's current research focuses on faithful Machine Unlearning beyond prediction suppression, separating forgotten concepts in the representation space and unlearning in an orthogonal subspace that does not impact retained knowledge. Other interests with past experience include Contrastive Learning and Diffusion Models.
+Haoran's current research focuses on Machine Unlearning and AI Safety, going beyond prediction suppression to remove concepts and behaviors at the representation level. His work ranges from the theory of unlearning to the algorithms it motivates for LLMs. He has also worked on Contrastive Learning and Diffusion Models.
 
-## Publications and Preprints
+## Select Publications and Preprints
 
 {% include publications.html %}
 
